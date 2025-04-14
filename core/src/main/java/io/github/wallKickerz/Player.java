@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class Player {
-    private static final float SCALE = 2.5f;
+    private static final float SCALE = 2.0f;
     private static final float GRAVITY = -900f;
     private static final float JUMP_VELOCITY = 900f;
     private static final float MOVE_SPEED = 350f;
@@ -20,9 +20,9 @@ public class Player {
 
     public Player(AssetManager assetManager) {
         this.texture = assetManager.getPlayerTexture();
-        float width = texture.getRegionWidth() * SCALE;
-        float height = texture.getRegionHeight() * SCALE;
-        this.x = (Gdx.graphics.getWidth() - width) / 2f;
+        float width = texture.getRegionWidth();
+        float height = texture.getRegionHeight();
+        this.x = (Gdx.graphics.getWidth() - width) / 2f; // Centrado horizontalmente
         this.y = 100; // Posición inicial encima del suelo
 
         // Hitbox ajustada (más estrecha y un poco más baja)
@@ -81,7 +81,7 @@ public class Player {
     }
 
     public void render(SpriteBatch batch) {
-        batch.draw(texture, x, y, texture.getRegionWidth() * SCALE, texture.getRegionHeight() * SCALE);
+        batch.draw(texture, x, y, texture.getRegionWidth() * SCALE, texture.getRegionHeight());
     }
 
     public Rectangle getHitbox() {
