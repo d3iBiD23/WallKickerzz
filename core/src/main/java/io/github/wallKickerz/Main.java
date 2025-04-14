@@ -85,8 +85,8 @@ public class Main extends ApplicationAdapter {
         // Crear plataformas flotantes en posiciones fijas (puedes hacerlas aleatorias más adelante)
         floatingPlatforms = new Array<>();
         floatingPlatforms.add(new Rectangle(100, 500, 200, 50));
-        floatingPlatforms.add(new Rectangle(250, 1100, 200, 50));
-        floatingPlatforms.add(new Rectangle(150, 1300, 200, 50));
+        floatingPlatforms.add(new Rectangle(250, 800, 200, 50));
+        floatingPlatforms.add(new Rectangle(150, 1100, 200, 50));
 
     }
 
@@ -147,19 +147,8 @@ public class Main extends ApplicationAdapter {
             }
         }
 
-        // Colisión con plataformas flotantes
         for (Rectangle platform : floatingPlatforms) {
-            float knightFeetY = knightHitbox.y;
-            float knightPrevY = knightY - velocityY * dt;
-
-            boolean falling = velocityY <= 0;
-            boolean hitsFromAbove = knightFeetY <= platform.y + platform.height &&
-                knightPrevY >= platform.y + platform.height;
-
-            if (falling && hitsFromAbove &&
-                knightHitbox.x + knightHitbox.width > platform.x &&
-                knightHitbox.x < platform.x + platform.width) {
-
+            if (isLandingOnPlatform(knightHitbox, platform, velocityY, dt)) {
                 knightY = platform.y + platform.height;
                 velocityY = JUMP_VELOCITY;
             }
@@ -169,6 +158,20 @@ public class Main extends ApplicationAdapter {
         knightHitbox.setPosition(knightX + 10f, knightY + 5f);
 
         batch.end();
+    }
+
+    private boolean isLandingOnPlatform(Rectangle knight, Rectangle platform, float velocityY, float dt) {
+        float knightFeetY = knight.y;
+        float knightPrevY = knight.y - velocityY * dt;
+
+        boolean falling = velocityY <= 0;
+        boolean hitsFromAbove = knightFeetY <= platform.y + platform.height &&
+            knightPrevY >= platform.y + platform.height;
+
+        boolean overlapsX = knight.x + knight.width > platform.x &&
+            knight.x < platform.x + platform.width;
+
+        return falling && hitsFromAbove && overlapsX;
     }
 
     @Override
