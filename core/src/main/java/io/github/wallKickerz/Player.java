@@ -87,4 +87,7 @@ public class Player {
     public Rectangle getHitbox() {
         return hitbox;
     }
+    public float getY() {
+        return y;
+    }
 }

@@ -60,12 +60,12 @@ public class Platform {
         return bounds.x;
     }
 
-    public float getY() {
-        return bounds.y;
-    }
-
     public float getWidth() {
         return bounds.width;
+    }
+
+    public float getY() {
+        return bounds.y;
     }
 
     public float getHeight() {
