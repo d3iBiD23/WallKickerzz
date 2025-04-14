@@ -27,24 +27,29 @@ public class Platform {
         if (isGround) {
             // Para el suelo, dibujamos múltiples texturas para cubrir el ancho
             float tileWidth = texture.getRegionWidth() * 2.0f;
-            for (float x = 0; x < bounds.width; x += tileWidth) {
-                batch.draw(texture, x, bounds.y, tileWidth, bounds.height);
+            float tileHeight = texture.getRegionHeight() * 2.0f; // Escala vertical aumentada
+
+            // Calcula cuántas veces debemos repetir la textura horizontalmente
+            int tilesX = (int) Math.ceil(bounds.width / tileWidth);
+
+            // Dibuja cada tile del suelo
+            for (int i = 0; i <= tilesX; i++) {
+                batch.draw(texture,
+                        bounds.x + i * tileWidth, bounds.y,
+                        tileWidth, bounds.height);
             }
         } else {
             // Plataforma flotante: escalamos proporcionalmente al ancho deseado
             float textureWidth = texture.getRegionWidth();
             float textureHeight = texture.getRegionHeight();
+            float scale = bounds.width / textureWidth;
 
-            // Calcula la escala para mantener la proporción original
-            float scale = bounds.width / textureWidth; // Escala basada en el ancho deseado
-
-            // Dibuja la textura escalada
             batch.draw(
                     texture,
                     bounds.x, bounds.y,
                     0, 0,
                     textureWidth, textureHeight,
-                    scale, scale, // Misma escala en X e Y para mantener proporciones
+                    scale, scale,
                     0
             );
         }

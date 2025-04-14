@@ -20,12 +20,12 @@ public class GameScreen implements Screen {
     }
     private Array<Platform> createPlatforms(AssetManager assetManager) {
         Array<Platform> platforms = new Array<>();
-        // Suelo (verde)
-        platforms.add(new Platform(0, 0, Gdx.graphics.getWidth(), 50, assetManager, true));
-        // Plataformas flotantes (grises) - ahora más anchas (por ejemplo, 300 de ancho en lugar de 200)
-        platforms.add(new Platform(100, 400, 150, 0, assetManager, false));  // Ancho cambiado a 300
-        platforms.add(new Platform(250, 800, 150, 0, assetManager, false)); // Ancho cambiado a 300
-        platforms.add(new Platform(150, 1200, 150, 0, assetManager, false)); // Ancho cambiado a 300
+        // Suelo (verde) - ahora más alto (100 en lugar de 50) y del ancho de la pantalla
+        platforms.add(new Platform(0, 0, Gdx.graphics.getWidth(), 100, assetManager, true)); // Cambiado a 100 de altura
+        // Plataformas flotantes (grises)
+        platforms.add(new Platform(100, 400, 150, 0, assetManager, false));
+        platforms.add(new Platform(250, 800, 150, 0, assetManager, false));
+        platforms.add(new Platform(150, 1200, 150, 0, assetManager, false));
         return platforms;
     }
 
