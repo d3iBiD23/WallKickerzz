@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
  */
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
+    private Texture backgroundTexture;
     // Variables para el suelo
     private Texture platformsTexture;
     private TextureRegion singlePlatform;
@@ -37,8 +38,10 @@ public class Main extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
 
+        backgroundTexture = new Texture("PNG/Background.png");
+
         // --- Suelo ---
-        platformsTexture = new Texture("brackeys_platformer_assets/sprites/platforms.png");
+        platformsTexture = new Texture("PNG/LandPiece_DarkGreen.png");
         // Extraemos la porción que corresponde a la segunda plataforma verde y larga.
         // Ajusta estos valores (srcX, srcY, width, height) según tu imagen.
         int platformSrcX = 13;
@@ -53,7 +56,7 @@ public class Main extends ApplicationAdapter {
         groundHitbox = new Rectangle(0, 0, screenWidth, groundTileHeight);
 
         // --- Caballero ---
-        knightTexture = new Texture("brackeys_platformer_assets/sprites/knight.png");
+        knightTexture = new Texture("PNG/CharacterLeft_Jump.png");
         // Asumimos que el sprite sheet del knight está organizado en 5 filas (animaciones)
         // y que la animación "idle" es la primera fila.
         // Supongamos además que la animación idle tiene 6 frames.
@@ -73,7 +76,7 @@ public class Main extends ApplicationAdapter {
 
         // Posicionamos al caballero centrado y justo sobre el suelo.
         knightX = (screenWidth - frameWidth * KNIGHT_SCALE) / 2f;
-        knightY = groundHitbox.y + groundHitbox.height;
+        knightY = (Gdx.graphics.getHeight() - frameHeight * KNIGHT_SCALE) / 2f;
         knightVelocityY = 0f;
         knightHitbox = new Rectangle(knightX, knightY, frameWidth * KNIGHT_SCALE, frameHeight * KNIGHT_SCALE);
     }
@@ -97,6 +100,8 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
+        // Fondo (siempre primero para que no tape nada)
+        batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         // Dibujar el suelo repetitivo
         for (float x = 0; x < groundHitbox.width; x += groundTileWidth) {
             batch.draw(singlePlatform, x, 0, groundTileWidth, groundTileHeight);
