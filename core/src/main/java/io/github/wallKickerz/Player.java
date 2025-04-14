@@ -23,7 +23,7 @@ public class Player {
         float width = texture.getRegionWidth() * SCALE;
         float height = texture.getRegionHeight() * SCALE;
         this.x = (Gdx.graphics.getWidth() - width) / 2f;
-        this.y = 50; // Posición inicial encima del suelo
+        this.y = 100; // Posición inicial encima del suelo
 
         // Hitbox ajustada (más estrecha y un poco más baja)
         float hitboxOffsetX = 10f;
