@@ -37,6 +37,9 @@ public class Main extends ApplicationAdapter {
     private float velocityY = 0;
     private final float GRAVITY = -900f;
     private final float JUMP_VELOCITY = 900f;
+    private float knightVelocityX = 0f;
+    private final float MOVE_SPEED = 350f;
+
 
     @Override
     public void create() {
@@ -108,9 +111,33 @@ public class Main extends ApplicationAdapter {
         batch.draw(knightTexture, knightX, knightY, knightTexture.getWidth() * KNIGHT_SCALE, knightTexture.getHeight() * KNIGHT_SCALE);
         knightHitbox.setPosition(knightX + 10f, knightY + 5f); // Actualizar la posición de la hitbox
 
+
+        // Control táctil: mover izquierda/derecha según mitad de pantalla tocada
+        if (Gdx.input.isTouched()) {
+            float touchX = Gdx.input.getX();
+            float screenWidth = Gdx.graphics.getWidth();
+
+            if (touchX < screenWidth / 2f) {
+                knightVelocityX = -MOVE_SPEED; // Mover a la izquierda
+            } else {
+                knightVelocityX = MOVE_SPEED; // Mover a la derecha
+            }
+        } else {
+            knightVelocityX = 0f; // No tocar: no moverse
+        }
+
         float dt = Gdx.graphics.getDeltaTime();
         velocityY += GRAVITY * dt;
         knightY += velocityY * dt;
+        knightX += knightVelocityX * dt;
+
+        // Limitar la velocidad máxima
+        float knightWidth = knightTexture.getWidth() * KNIGHT_SCALE;
+        // Limitar la posición X del personaje para que no salga de la pantalla
+        if (knightX < 0) knightX = 0;
+        if (knightX + knightWidth > Gdx.graphics.getWidth())
+            knightX = Gdx.graphics.getWidth() - knightWidth;
+
 
         // Colisión con el suelo
         if (knightHitbox.overlaps(groundHitbox)) {
