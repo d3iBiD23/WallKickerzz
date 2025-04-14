@@ -81,9 +81,9 @@ public class Main extends ApplicationAdapter {
 
         // Crear plataformas flotantes en posiciones fijas (puedes hacerlas aleatorias más adelante)
         floatingPlatforms = new Array<>();
-        floatingPlatforms.add(new Rectangle(100, 600, 96, 32));
-        floatingPlatforms.add(new Rectangle(250, 900, 96, 32));
-        floatingPlatforms.add(new Rectangle(150, 1200, 96, 32));
+        floatingPlatforms.add(new Rectangle(100, 600, 200, 50));
+        floatingPlatforms.add(new Rectangle(250, 1200, 200, 50));
+        floatingPlatforms.add(new Rectangle(150, 1500, 200, 50));
 
     }
 
@@ -111,6 +111,14 @@ public class Main extends ApplicationAdapter {
         float dt = Gdx.graphics.getDeltaTime();
         velocityY += GRAVITY * dt;
         knightY += velocityY * dt;
+
+        // Colisión con el suelo
+        if (knightHitbox.overlaps(groundHitbox)) {
+            if (velocityY <= 0 && knightHitbox.y >= groundHitbox.y + groundHitbox.height / 2f) {
+                knightY = groundHitbox.y + groundHitbox.height;
+                velocityY = JUMP_VELOCITY;
+            }
+        }
 
         // Verificamos colisión con plataformas flotantes
         for (Rectangle platform : floatingPlatforms) {
