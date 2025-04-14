@@ -10,9 +10,17 @@ public class Platform {
     private final boolean isGround;
 
     public Platform(float x, float y, float width, float height, AssetManager assetManager, boolean isGround) {
-        this.bounds = new Rectangle(x, y, width, height);
         this.isGround = isGround;
         this.texture = isGround ? assetManager.getGroundPlatformTexture() : assetManager.getFloatingPlatformTexture();
+
+        // Ajustar la altura proporcionalmente al ancho si es una plataforma flotante
+        if (!isGround) {
+            float textureWidth = texture.getRegionWidth();
+            float textureHeight = texture.getRegionHeight();
+            height = (width / textureWidth) * textureHeight; // Nueva altura proporcional
+        }
+
+        this.bounds = new Rectangle(x, y, width, height);
     }
 
     public void render(SpriteBatch batch) {
@@ -23,12 +31,22 @@ public class Platform {
                 batch.draw(texture, x, bounds.y, tileWidth, bounds.height);
             }
         } else {
-            // Plataforma flotante: dibuja la textura con su tamaño original
+            // Plataforma flotante: escalamos proporcionalmente al ancho deseado
             float textureWidth = texture.getRegionWidth();
             float textureHeight = texture.getRegionHeight();
-            // Ajusta la escala si es necesario, pero mantén las proporciones
-            float scale = bounds.height / textureHeight; // Escala basada en la altura deseada
-            batch.draw(texture, bounds.x, bounds.y, 0, 0, textureWidth, textureHeight, scale, scale, 0);
+
+            // Calcula la escala para mantener la proporción original
+            float scale = bounds.width / textureWidth; // Escala basada en el ancho deseado
+
+            // Dibuja la textura escalada
+            batch.draw(
+                    texture,
+                    bounds.x, bounds.y,
+                    0, 0,
+                    textureWidth, textureHeight,
+                    scale, scale, // Misma escala en X e Y para mantener proporciones
+                    0
+            );
         }
     }
 

@@ -22,10 +22,10 @@ public class GameScreen implements Screen {
         Array<Platform> platforms = new Array<>();
         // Suelo (verde)
         platforms.add(new Platform(0, 0, Gdx.graphics.getWidth(), 50, assetManager, true));
-        // Plataformas flotantes (grises)
-        platforms.add(new Platform(100, 500, 200, 50, assetManager, false));
-        platforms.add(new Platform(250, 800, 200, 50, assetManager, false));
-        platforms.add(new Platform(150, 1100, 200, 50, assetManager, false));
+        // Plataformas flotantes (grises) - ahora más anchas (por ejemplo, 300 de ancho en lugar de 200)
+        platforms.add(new Platform(100, 400, 150, 0, assetManager, false));  // Ancho cambiado a 300
+        platforms.add(new Platform(250, 800, 150, 0, assetManager, false)); // Ancho cambiado a 300
+        platforms.add(new Platform(150, 1200, 150, 0, assetManager, false)); // Ancho cambiado a 300
         return platforms;
     }
 

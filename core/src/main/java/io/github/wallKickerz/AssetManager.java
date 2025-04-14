@@ -28,7 +28,7 @@ public class AssetManager {
     }
 
     public TextureRegion getGroundPlatformTexture() {
-        return new TextureRegion(groundPlatformTexture, 13, 0, 32, 45);
+        return new TextureRegion(groundPlatformTexture, 13, 0, 35, 50);
     }
 
     public TextureRegion getFloatingPlatformTexture() {
