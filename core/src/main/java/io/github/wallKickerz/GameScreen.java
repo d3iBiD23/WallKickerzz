@@ -11,7 +11,6 @@ public class GameScreen implements Screen {
     private final Player player;
     private final Array<Platform> platforms;
     private final AssetManager assetManager;
-
     public GameScreen(Main game) {
         this.game = game;
         this.assetManager = new AssetManager();
