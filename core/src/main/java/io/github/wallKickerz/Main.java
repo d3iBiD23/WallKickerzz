@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 
 import jdk.jfr.consumer.RecordedClass;
 
@@ -27,6 +28,15 @@ public class Main extends ApplicationAdapter {
 
     private float knightX, knightY;
     private Rectangle knightHitbox;
+
+    // Textura y regiones para plataformas flotantes
+    private Texture floatingPlatformTexture;
+    private TextureRegion floatingPlatformRegion;
+    private Array<Rectangle> floatingPlatforms;
+    // Física de salto
+    private float velocityY = 0;
+    private final float GRAVITY = -900f;
+    private final float JUMP_VELOCITY = 600f;
 
     @Override
     public void create() {
@@ -65,6 +75,16 @@ public class Main extends ApplicationAdapter {
         float hitboxHeight = knightHeight - 10f; // más bajo
 
         knightHitbox = new Rectangle(knightX + hitboxOffsetX, knightY + hitboxOffsetY, hitboxWidth, hitboxHeight);
+
+        floatingPlatformTexture = new Texture("PNG/LandPiece_DarkGray.png");
+        floatingPlatformRegion = new TextureRegion(floatingPlatformTexture);
+
+        // Crear plataformas flotantes en posiciones fijas (puedes hacerlas aleatorias más adelante)
+        floatingPlatforms = new Array<>();
+        floatingPlatforms.add(new Rectangle(100, 600, 96, 32));
+        floatingPlatforms.add(new Rectangle(250, 900, 96, 32));
+        floatingPlatforms.add(new Rectangle(150, 1200, 96, 32));
+
     }
 
     @Override
@@ -75,14 +95,37 @@ public class Main extends ApplicationAdapter {
         batch.begin();
         batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        // Dibujar el suelo
         for (float x = 0; x < groundHitbox.width; x += groundTileWidth) {
             batch.draw(singlePlatform, x, 0, groundTileWidth, groundTileHeight);
         }
 
-        batch.draw(knightTexture, knightX, knightY,
-            knightTexture.getWidth() * KNIGHT_SCALE,
-            knightTexture.getHeight() * KNIGHT_SCALE);
+        // Dibujar plataformas flotantes
+        for (Rectangle platform : floatingPlatforms) {
+            batch.draw(floatingPlatformRegion, platform.x, platform.y, platform.width, platform.height);
+        }
+
+        batch.draw(knightTexture, knightX, knightY, knightTexture.getWidth() * KNIGHT_SCALE, knightTexture.getHeight() * KNIGHT_SCALE);
         knightHitbox.setPosition(knightX + 10f, knightY + 5f); // Actualizar la posición de la hitbox
+
+        float dt = Gdx.graphics.getDeltaTime();
+        velocityY += GRAVITY * dt;
+        knightY += velocityY * dt;
+
+        // Verificamos colisión con plataformas flotantes
+        for (Rectangle platform : floatingPlatforms) {
+            if (knightHitbox.overlaps(platform)) {
+                // Solo si estamos cayendo y tocamos desde arriba
+                if (velocityY <= 0 && knightHitbox.y > platform.y) {
+                    knightY = platform.y + platform.height;
+                    velocityY = JUMP_VELOCITY;
+                }
+            }
+        }
+
+        // Actualizar posición de hitbox del personaje
+        knightHitbox.setPosition(knightX + 10f, knightY + 5f);
+
         batch.end();
     }
 
