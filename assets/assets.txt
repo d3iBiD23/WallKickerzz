@@ -1,0 +1,17 @@
+brackeys_platformer_assets/fonts/PixelOperator8-Bold.ttf
+brackeys_platformer_assets/fonts/PixelOperator8.ttf
+brackeys_platformer_assets/music/time_for_adventure.mp3
+brackeys_platformer_assets/sounds/coin.wav
+brackeys_platformer_assets/sounds/explosion.wav
+brackeys_platformer_assets/sounds/hurt.wav
+brackeys_platformer_assets/sounds/jump.wav
+brackeys_platformer_assets/sounds/power_up.wav
+brackeys_platformer_assets/sounds/tap.wav
+brackeys_platformer_assets/sprites/coin.png
+brackeys_platformer_assets/sprites/fruit.png
+brackeys_platformer_assets/sprites/knight.png
+brackeys_platformer_assets/sprites/platforms.png
+brackeys_platformer_assets/sprites/slime_green.png
+brackeys_platformer_assets/sprites/slime_purple.png
+brackeys_platformer_assets/sprites/world_tileset.png
+libgdx.png
