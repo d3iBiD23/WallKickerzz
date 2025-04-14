@@ -36,7 +36,7 @@ public class Main extends ApplicationAdapter {
     // Física de salto
     private float velocityY = 0;
     private final float GRAVITY = -900f;
-    private final float JUMP_VELOCITY = 600f;
+    private final float JUMP_VELOCITY = 900f;
 
     @Override
     public void create() {
@@ -81,9 +81,9 @@ public class Main extends ApplicationAdapter {
 
         // Crear plataformas flotantes en posiciones fijas (puedes hacerlas aleatorias más adelante)
         floatingPlatforms = new Array<>();
-        floatingPlatforms.add(new Rectangle(100, 600, 200, 50));
-        floatingPlatforms.add(new Rectangle(250, 1200, 200, 50));
-        floatingPlatforms.add(new Rectangle(150, 1500, 200, 50));
+        floatingPlatforms.add(new Rectangle(100, 500, 200, 50));
+        floatingPlatforms.add(new Rectangle(250, 1100, 200, 50));
+        floatingPlatforms.add(new Rectangle(150, 1300, 200, 50));
 
     }
 
@@ -120,14 +120,21 @@ public class Main extends ApplicationAdapter {
             }
         }
 
-        // Verificamos colisión con plataformas flotantes
+        // Colisión con plataformas flotantes
         for (Rectangle platform : floatingPlatforms) {
-            if (knightHitbox.overlaps(platform)) {
-                // Solo si estamos cayendo y tocamos desde arriba
-                if (velocityY <= 0 && knightHitbox.y > platform.y) {
-                    knightY = platform.y + platform.height;
-                    velocityY = JUMP_VELOCITY;
-                }
+            float knightFeetY = knightHitbox.y;
+            float knightPrevY = knightY - velocityY * dt;
+
+            boolean falling = velocityY <= 0;
+            boolean hitsFromAbove = knightFeetY <= platform.y + platform.height &&
+                knightPrevY >= platform.y + platform.height;
+
+            if (falling && hitsFromAbove &&
+                knightHitbox.x + knightHitbox.width > platform.x &&
+                knightHitbox.x < platform.x + platform.width) {
+
+                knightY = platform.y + platform.height;
+                velocityY = JUMP_VELOCITY;
             }
         }
 
