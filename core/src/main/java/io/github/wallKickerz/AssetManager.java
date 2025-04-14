@@ -10,13 +10,16 @@ public class AssetManager {
     private Texture platformTexture;
     private Texture playerTexture;
 
+    private Texture groundPlatformTexture; // Textura para el suelo
+    private Texture floatingPlatformTexture; // Textura para plataformas flotantes
     public AssetManager() {
         loadAssets();
     }
 
     private void loadAssets() {
         backgroundTexture = new Texture(Gdx.files.internal("PNG/Background.png"));
-        platformTexture = new Texture(Gdx.files.internal("PNG/LandPiece_DarkGreen.png"));
+        groundPlatformTexture = new Texture(Gdx.files.internal("PNG/LandPiece_DarkGreen.png"));
+        floatingPlatformTexture = new Texture(Gdx.files.internal("PNG/LandPiece_DarkGray.png"));
         playerTexture = new Texture(Gdx.files.internal("PNG/CharacterLeft_Jump.png"));
     }
 
@@ -24,9 +27,12 @@ public class AssetManager {
         batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    public TextureRegion getPlatformTexture() {
-        // Extraemos una región específica de la textura (como en tu código original)
-        return new TextureRegion(platformTexture, 13, 0, 32, 45);
+    public TextureRegion getGroundPlatformTexture() {
+        return new TextureRegion(groundPlatformTexture, 13, 0, 32, 45);
+    }
+
+    public TextureRegion getFloatingPlatformTexture() {
+        return new TextureRegion(floatingPlatformTexture, 13, 0, 80, 52);
     }
 
     public TextureRegion getPlayerTexture() {
@@ -35,7 +41,8 @@ public class AssetManager {
 
     public void dispose() {
         backgroundTexture.dispose();
-        platformTexture.dispose();
+        groundPlatformTexture.dispose();
+        floatingPlatformTexture.dispose();
         playerTexture.dispose();
     }
 }
