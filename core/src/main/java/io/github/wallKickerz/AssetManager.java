@@ -32,7 +32,8 @@ public class AssetManager {
     }
 
     public TextureRegion getFloatingPlatformTexture() {
-        return new TextureRegion(floatingPlatformTexture, 13, 0, 80, 52);
+        // Asegúrate de que la textura se carga con sus dimensiones originales
+        return new TextureRegion(floatingPlatformTexture);
     }
 
     public TextureRegion getPlayerTexture() {

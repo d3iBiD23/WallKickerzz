@@ -12,9 +12,7 @@ public class Platform {
     public Platform(float x, float y, float width, float height, AssetManager assetManager, boolean isGround) {
         this.bounds = new Rectangle(x, y, width, height);
         this.isGround = isGround;
-        this.texture = isGround ?
-                assetManager.getGroundPlatformTexture() :
-                assetManager.getFloatingPlatformTexture();
+        this.texture = isGround ? assetManager.getGroundPlatformTexture() : assetManager.getFloatingPlatformTexture();
     }
 
     public void render(SpriteBatch batch) {
@@ -25,8 +23,12 @@ public class Platform {
                 batch.draw(texture, x, bounds.y, tileWidth, bounds.height);
             }
         } else {
-            // Plataforma flotante
-            batch.draw(texture, bounds.x, bounds.y, bounds.width, bounds.height);
+            // Plataforma flotante: dibuja la textura con su tamaño original
+            float textureWidth = texture.getRegionWidth();
+            float textureHeight = texture.getRegionHeight();
+            // Ajusta la escala si es necesario, pero mantén las proporciones
+            float scale = bounds.height / textureHeight; // Escala basada en la altura deseada
+            batch.draw(texture, bounds.x, bounds.y, 0, 0, textureWidth, textureHeight, scale, scale, 0);
         }
     }
 
