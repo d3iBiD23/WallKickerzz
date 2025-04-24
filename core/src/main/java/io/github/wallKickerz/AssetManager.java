@@ -12,6 +12,7 @@ public class AssetManager {
 
     private Texture groundPlatformTexture; // Textura para el suelo
     private Texture floatingPlatformTexture; // Textura para plataformas flotantes
+
     public AssetManager() {
         loadAssets();
     }
@@ -23,8 +24,8 @@ public class AssetManager {
         playerTexture = new Texture(Gdx.files.internal("PNG/CharacterLeft_Jump.png"));
     }
 
-    public void drawBackground(SpriteBatch batch) {
-        batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    public void drawBackground(SpriteBatch batch, float bottomY) {
+        batch.draw(backgroundTexture, 0, bottomY, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public TextureRegion getGroundPlatformTexture() {

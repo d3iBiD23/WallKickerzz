@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Platform {
+    public static final float DEFAULT_WIDTH = 150f;
     private final TextureRegion texture;
     private final Rectangle bounds;
     private final boolean isGround;
