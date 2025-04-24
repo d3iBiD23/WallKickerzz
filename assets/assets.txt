@@ -66,7 +66,7 @@ PNG/Number_9.png
 PNG/Number_Point.png
 PNG/Pistol.png
 PNG/Spring.png
-default.fnt
-uiskin.atlas
-uiskin.json
-uiskin.png
+data/default.fnt
+data/uiskin.atlas
+data/uiskin.json
+data/uiskin.png

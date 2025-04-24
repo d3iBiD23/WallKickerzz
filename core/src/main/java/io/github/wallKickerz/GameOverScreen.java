@@ -18,7 +18,7 @@ public class GameOverScreen implements Screen {
     public GameOverScreen(final Main game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
-        skin = new Skin(Gdx.files.internal("uiskin.json")); // pon aquí tu skin
+        skin = new Skin(Gdx.files.internal("data/uiskin.json")); // pon aquí tu skin
 
         Table table = new Table(skin);
         table.setFillParent(true);

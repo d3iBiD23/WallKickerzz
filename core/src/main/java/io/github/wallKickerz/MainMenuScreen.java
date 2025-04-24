@@ -24,7 +24,7 @@ public class MainMenuScreen implements Screen {
         this.game = game;
         // Crear escenario y skin
         stage = new Stage(new ScreenViewport());
-        skin  = new Skin(Gdx.files.internal("uiskin.json")); // Asegúrate de incluir este archivo en assets
+        skin  = new Skin(Gdx.files.internal("data/uiskin.json")); // Asegúrate de incluir este archivo en assets
 
         // Tabla para organizar UI
         Table table = new Table(skin);
