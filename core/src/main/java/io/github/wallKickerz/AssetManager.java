@@ -39,9 +39,6 @@ public class AssetManager {
     public TextureRegion getPlayerTexture() {
         return new TextureRegion(playerTexture);
     }
-    public TextureRegion getBackgroundTexture() {
-        return new TextureRegion(backgroundTexture);
-    }
 
     public void dispose() {
         backgroundTexture.dispose();
