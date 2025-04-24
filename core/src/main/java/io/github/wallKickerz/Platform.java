@@ -26,15 +26,17 @@ public class Platform {
     public void render(SpriteBatch batch) {
         if (isGround) {
             // Para el suelo, dibujamos múltiples texturas para cubrir el ancho
-            float tileWidth = texture.getRegionWidth();
-            float tileHeight = texture.getRegionHeight(); // Escala vertical aumentada
+            float tileWidth = texture.getRegionWidth() * 2.0f;
+            float tileHeight = texture.getRegionHeight() * 2.0f; // Escala vertical aumentada
 
             // Calcula cuántas veces debemos repetir la textura horizontalmente
             int tilesX = (int) Math.ceil(bounds.width / tileWidth);
 
             // Dibuja cada tile del suelo
             for (int i = 0; i <= tilesX; i++) {
-                batch.draw(texture, bounds.x + i * tileWidth, bounds.y, tileWidth, bounds.height);
+                batch.draw(texture,
+                        bounds.x + i * tileWidth, bounds.y,
+                        tileWidth, bounds.height);
             }
         } else {
             // Plataforma flotante: escalamos proporcionalmente al ancho deseado
@@ -42,7 +44,14 @@ public class Platform {
             float textureHeight = texture.getRegionHeight() * 1.5f; // Escala vertical
             float scale = bounds.width / textureWidth;
 
-            batch.draw(texture, bounds.x, bounds.y, 0, 0, textureWidth, textureHeight, scale, scale, 0);
+            batch.draw(
+                    texture,
+                    bounds.x, bounds.y,
+                    0, 0,
+                    textureWidth, textureHeight,
+                    scale, scale,
+                    0
+            );
         }
     }
 
