@@ -3,7 +3,9 @@ package io.github.wallKickerz;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -14,18 +16,27 @@ public class GameOverScreen implements Screen {
     private final Main game;
     private Stage stage;
     private Skin skin;
+    private Texture backgroundTexture;
 
     public GameOverScreen(final Main game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("data/uiskin.json")); // pon aquí tu skin
 
-        Table table = new Table(skin);
+
+        backgroundTexture = new Texture(Gdx.files.internal("PNG/Background.png"));
+        Image backgroundImage = new Image(backgroundTexture);
+        backgroundImage.setFillParent(true);
+        stage.addActor(backgroundImage);
+
+        Table table = new Table();
         table.setFillParent(true);
+        table.center();
 
         TextButton retry = new TextButton("Intentar de nuevo", skin);
+        retry.sizeBy(10f);
         TextButton menu  = new TextButton("Volver al inicio", skin);
-
+        menu.sizeBy(10f);
         retry.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
@@ -41,8 +52,8 @@ public class GameOverScreen implements Screen {
             }
         });
 
-        table.add(retry).pad(10).row();
-        table.add(menu ).pad(10);
+        table.add(retry).size(600, 100).pad(10).row();
+        table.add(menu).size(600, 100).pad(10);
         stage.addActor(table);
 
         Gdx.input.setInputProcessor(stage);

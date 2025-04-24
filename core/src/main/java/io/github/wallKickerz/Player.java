@@ -8,9 +8,9 @@ import com.badlogic.gdx.utils.Array;
 
 public class Player {
     private static final float SCALE = 2.5f;
-    private static final float GRAVITY = -2000f;
-    private static final float JUMP_VELOCITY = 1500f;
-    private static final float MOVE_SPEED = 550f;
+    private static final float GRAVITY = -2500f;
+    private static final float JUMP_VELOCITY = 1800f;
+    private static final float MOVE_SPEED = 600f;
 
     private final TextureRegion texture;
     private final Rectangle hitbox;
