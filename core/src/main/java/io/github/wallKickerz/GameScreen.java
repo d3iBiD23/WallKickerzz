@@ -17,6 +17,7 @@ public class GameScreen implements Screen {
     private final AssetManager assetManager;
 
     private OrthographicCamera camera;
+    private float initialCameraY;
     private float highestPlatformY;       // Guarda la Y más alta de las plataformas
     private static final float SPAWN_GAP_MIN = 150f;  // mínimo espacio vertical entre plataformas
     private static final float SPAWN_GAP_MAX = 300f;  // máximo espacio vertical
@@ -29,6 +30,9 @@ public class GameScreen implements Screen {
         // Inicializa la cámara al tamaño de pantalla
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        initialCameraY = Gdx.graphics.getHeight() / 2f;
+        camera.position.set(camera.viewportWidth / 2f, initialCameraY, 0);
 
         // Crea las plataformas iniciales y calcula la Y más alta
         this.platforms = createInitialPlatforms(assetManager);
@@ -58,9 +62,16 @@ public class GameScreen implements Screen {
         // 2) Generación y limpieza de plataformas según la cámara
         updatePlatforms();
 
-        // 3) Mueve la cámara para que siga al jugador
+        // 3) Movimiento de la cámara
         float camX = Gdx.graphics.getWidth() / 2f;
-        float camY = player.getHitbox().y + player.getHitbox().height / 2f;
+        float camY = camera.position.y;
+
+        // Solo sigue al jugador si está por encima de la mitad de la pantalla
+        float playerY = player.getHitbox().y + player.getHitbox().height / 2f;
+        if (playerY > initialCameraY) {
+            camY = playerY;
+        }
+
         camera.position.set(camX, camY, 0);
         camera.update();
 
