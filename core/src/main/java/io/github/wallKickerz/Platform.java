@@ -15,8 +15,8 @@ public class Platform {
 
         // Ajustar la altura proporcionalmente al ancho si es una plataforma flotante
         if (!isGround) {
-            float textureWidth = texture.getRegionWidth(); // Escala horizontal
-            float textureHeight = texture.getRegionHeight() ;
+            float textureWidth = texture.getRegionWidth(); // Escala horizontal aumentada
+            float textureHeight = texture.getRegionHeight();
             height = (width / textureWidth) * textureHeight; // Nueva altura proporcional
         }
 
@@ -40,8 +40,8 @@ public class Platform {
             }
         } else {
             // Plataforma flotante: escalamos proporcionalmente al ancho deseado
-            float textureWidth = texture.getRegionWidth() * 5.0f; // Escala horizontal
-            float textureHeight = texture.getRegionHeight() * 1.5f; // Escala vertical
+            float textureWidth = texture.getRegionWidth();
+            float textureHeight = texture.getRegionHeight();
             float scale = bounds.width / textureWidth;
 
             batch.draw(
