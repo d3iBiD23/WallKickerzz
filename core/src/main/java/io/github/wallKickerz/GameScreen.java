@@ -66,14 +66,23 @@ public class GameScreen implements Screen {
         float camX = Gdx.graphics.getWidth() / 2f;
         float camY = camera.position.y;
 
-        // Solo sigue al jugador si está por encima de la mitad de la pantalla
+        // Sólo sube la cámara cuando el jugador supere su posición actual
         float playerY = player.getHitbox().y + player.getHitbox().height / 2f;
-        if (playerY > initialCameraY) {
+        if (playerY > camera.position.y) {
             camY = playerY;
         }
 
         camera.position.set(camX, camY, 0);
         camera.update();
+
+        // Calcula la Y del fondo de cámara
+        float bottomEdge = camera.position.y - camera.viewportHeight / 2f;
+
+        // Si el jugador cae por debajo → Game Over
+        if (player.getHitbox().y < bottomEdge) {
+            game.setScreen(new GameOverScreen(game));
+            return; // salimos de render para no dibujar la partida
+        }
 
         // 4) Dibujado con la cámara
         SpriteBatch batch = game.getBatch();
@@ -92,7 +101,9 @@ public class GameScreen implements Screen {
         batch.end();
     }
 
-    /** Genera nuevas plataformas arriba y elimina las viejas debajo */
+    /**
+     * Genera nuevas plataformas arriba y elimina las viejas debajo
+     */
     private void updatePlatforms() {
         float topEdge = camera.position.y + camera.viewportHeight / 2f;
         // A) Genera mientras la Y más alta esté por debajo del topEdge
@@ -118,12 +129,28 @@ public class GameScreen implements Screen {
     }
 
     // … resto de métodos obligatorios de Screen …
-    @Override public void show() {}
-    @Override public void resize(int width, int height) {}
-    @Override public void pause() {}
-    @Override public void resume() {}
-    @Override public void hide() {}
-    @Override public void dispose() {
+    @Override
+    public void show() {
+    }
+
+    @Override
+    public void resize(int width, int height) {
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+    }
+
+    @Override
+    public void dispose() {
         assetManager.dispose();
     }
 }
