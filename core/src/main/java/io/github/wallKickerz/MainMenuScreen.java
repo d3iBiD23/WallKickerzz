@@ -41,7 +41,7 @@ public class MainMenuScreen implements Screen {
 
         // Título del juego con fuente más grande
         Label title = new Label("WallKickerz", skin);
-        title.setFontScale(10f);
+        title.setFontScale(8f);
 
         // Botones con texto ampliado
         TextButton play = new TextButton("Jugar", skin);

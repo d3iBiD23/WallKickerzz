@@ -1,5 +1,7 @@
 PNG/AngryCloud.png
 PNG/Background.png
+PNG/Backgrounds/Background_Clouds.png
+PNG/Backgrounds/Background_Jungle.png
 PNG/BrokenLandPiece_Beige.png
 PNG/BrokenLandPiece_Blue.png
 PNG/BrokenLandPiece_Gray.png
@@ -9,6 +11,69 @@ PNG/BrokenLandPiece_Pink.png
 PNG/Bubble_Big.png
 PNG/Bubble_Small.png
 PNG/Bullet.png
+PNG/Buttens and Headers/ButtonExtraWide_Beighe.png
+PNG/Buttens and Headers/ButtonExtraWide_BeigheDrak.png
+PNG/Buttens and Headers/ButtonExtraWide_Black.png
+PNG/Buttens and Headers/ButtonExtraWide_BlackDark.png
+PNG/Buttens and Headers/ButtonExtraWide_Blue.png
+PNG/Buttens and Headers/ButtonExtraWide_BlueDark.png
+PNG/Buttens and Headers/ButtonExtraWide_Green.png
+PNG/Buttens and Headers/ButtonExtraWide_GreenDark.png
+PNG/Buttens and Headers/ButtonExtraWide_Orange.png
+PNG/Buttens and Headers/ButtonExtraWide_OrangeDark.png
+PNG/Buttens and Headers/ButtonExtraWide_Pink.png
+PNG/Buttens and Headers/ButtonExtraWide_PinkDark.png
+PNG/Buttens and Headers/ButtonExtraWide_Red.png
+PNG/Buttens and Headers/ButtonExtraWide_RedDark.png
+PNG/Buttens and Headers/ButtonRound_Beighe.png
+PNG/Buttens and Headers/ButtonRound_BeigheDark.png
+PNG/Buttens and Headers/ButtonRound_Black.png
+PNG/Buttens and Headers/ButtonRound_BlackDark.png
+PNG/Buttens and Headers/ButtonRound_Blue.png
+PNG/Buttens and Headers/ButtonRound_BlueDark.png
+PNG/Buttens and Headers/ButtonRound_Green.png
+PNG/Buttens and Headers/ButtonRound_GreenDark.png
+PNG/Buttens and Headers/ButtonRound_OangeDark.png
+PNG/Buttens and Headers/ButtonRound_Orange.png
+PNG/Buttens and Headers/ButtonRound_Pink.png
+PNG/Buttens and Headers/ButtonRound_PinkDark.png
+PNG/Buttens and Headers/ButtonRound_Red.png
+PNG/Buttens and Headers/ButtonRound_RedDark.png
+PNG/Buttens and Headers/ButtonSquare_Beighe.png
+PNG/Buttens and Headers/ButtonSquare_BeigheDark.png
+PNG/Buttens and Headers/ButtonSquare_Black.png
+PNG/Buttens and Headers/ButtonSquare_BlackDark.png
+PNG/Buttens and Headers/ButtonSquare_Blue.png
+PNG/Buttens and Headers/ButtonSquare_BlueDark.png
+PNG/Buttens and Headers/ButtonSquare_Green.png
+PNG/Buttens and Headers/ButtonSquare_GreenDark.png
+PNG/Buttens and Headers/ButtonSquare_Orange.png
+PNG/Buttens and Headers/ButtonSquare_OrangeDark.png
+PNG/Buttens and Headers/ButtonSquare_Pink.png
+PNG/Buttens and Headers/ButtonSquare_PinkDark.png
+PNG/Buttens and Headers/ButtonSquare_Red.png
+PNG/Buttens and Headers/ButtonSquare_RedDark.png
+PNG/Buttens and Headers/ButtonWide_Beighe.png
+PNG/Buttens and Headers/ButtonWide_BeigheDark.png
+PNG/Buttens and Headers/ButtonWide_Black.png
+PNG/Buttens and Headers/ButtonWide_BlackDark.png
+PNG/Buttens and Headers/ButtonWide_Blue.png
+PNG/Buttens and Headers/ButtonWide_BlueDark.png
+PNG/Buttens and Headers/ButtonWide_Green.png
+PNG/Buttens and Headers/ButtonWide_GreenDark.png
+PNG/Buttens and Headers/ButtonWide_Orange.png
+PNG/Buttens and Headers/ButtonWide_OrangeDark.png
+PNG/Buttens and Headers/ButtonWide_Pink.png
+PNG/Buttens and Headers/ButtonWide_PinkDark.png
+PNG/Buttens and Headers/ButtonWide_Red.png
+PNG/Buttens and Headers/ButtonWide_RedDark.png
+PNG/Buttens and Headers/Header_Beighe.png
+PNG/Buttens and Headers/Header_Black.png
+PNG/Buttens and Headers/Header_Blue.png
+PNG/Buttens and Headers/Header_Green.png
+PNG/Buttens and Headers/Header_Orange.png
+PNG/Buttens and Headers/Header_Pink.png
+PNG/Buttens and Headers/Header_Red.png
 PNG/CharacterLeft_Jump.png
 PNG/CharacterLeft_Standing.png
 PNG/CharacterLeft_Walk1.png
@@ -19,6 +84,14 @@ PNG/CharacterRight_Walk1.png
 PNG/CharacterRight_Walk2.png
 PNG/CloudWind.png
 PNG/Coin.png
+PNG/Enemys/Enemy_Broccoli1.png
+PNG/Enemys/Enemy_Broccoli2.png
+PNG/Enemys/Enemy_Candy1.png
+PNG/Enemys/Enemy_Candy2.png
+PNG/Enemys/Enemy_Mushroom1.png
+PNG/Enemys/Enemy_Mushroom2.png
+PNG/Enemys/Enemy_Snowman1.png
+PNG/Enemys/Enemy_Snowman2.png
 PNG/HalfLandPiece_Left_Beige.png
 PNG/HalfLandPiece_Left_Blue.png
 PNG/HalfLandPiece_Left_Gray.png
@@ -64,6 +137,67 @@ PNG/Number_7.png
 PNG/Number_8.png
 PNG/Number_9.png
 PNG/Number_Point.png
+PNG/Numbers, Letters and Icons/EvenFasterIcon_Black.png
+PNG/Numbers, Letters and Icons/EvenFasterIcon_White.png
+PNG/Numbers, Letters and Icons/EvenSlower_Black.png
+PNG/Numbers, Letters and Icons/EvenSlower_White.png
+PNG/Numbers, Letters and Icons/FasterIcon_Black.png
+PNG/Numbers, Letters and Icons/FasterIcon_White.png
+PNG/Numbers, Letters and Icons/HomeIcon_Black.png
+PNG/Numbers, Letters and Icons/HomeIcon_White.png
+PNG/Numbers, Letters and Icons/Letter_A.png
+PNG/Numbers, Letters and Icons/Letter_B.png
+PNG/Numbers, Letters and Icons/Letter_C.png
+PNG/Numbers, Letters and Icons/Letter_D.png
+PNG/Numbers, Letters and Icons/Letter_E.png
+PNG/Numbers, Letters and Icons/Letter_F.png
+PNG/Numbers, Letters and Icons/Letter_G.png
+PNG/Numbers, Letters and Icons/Letter_H.png
+PNG/Numbers, Letters and Icons/Letter_I.png
+PNG/Numbers, Letters and Icons/Letter_J.png
+PNG/Numbers, Letters and Icons/Letter_K.png
+PNG/Numbers, Letters and Icons/Letter_L.png
+PNG/Numbers, Letters and Icons/Letter_M.png
+PNG/Numbers, Letters and Icons/Letter_N.png
+PNG/Numbers, Letters and Icons/Letter_O.png
+PNG/Numbers, Letters and Icons/Letter_P.png
+PNG/Numbers, Letters and Icons/Letter_Q.png
+PNG/Numbers, Letters and Icons/Letter_R.png
+PNG/Numbers, Letters and Icons/Letter_S.png
+PNG/Numbers, Letters and Icons/Letter_T.png
+PNG/Numbers, Letters and Icons/Letter_U.png
+PNG/Numbers, Letters and Icons/Letter_V.png
+PNG/Numbers, Letters and Icons/Letter_W.png
+PNG/Numbers, Letters and Icons/Letter_X.png
+PNG/Numbers, Letters and Icons/Letter_Y.png
+PNG/Numbers, Letters and Icons/Letter_Z.png
+PNG/Numbers, Letters and Icons/MenuIcon_Black.png
+PNG/Numbers, Letters and Icons/MenuIcon_White.png
+PNG/Numbers, Letters and Icons/Number_0.png
+PNG/Numbers, Letters and Icons/Number_1.png
+PNG/Numbers, Letters and Icons/Number_2.png
+PNG/Numbers, Letters and Icons/Number_3.png
+PNG/Numbers, Letters and Icons/Number_4.png
+PNG/Numbers, Letters and Icons/Number_5.png
+PNG/Numbers, Letters and Icons/Number_6.png
+PNG/Numbers, Letters and Icons/Number_7.png
+PNG/Numbers, Letters and Icons/Number_8.png
+PNG/Numbers, Letters and Icons/Number_9.png
+PNG/Numbers, Letters and Icons/Number_Dot.png
+PNG/Numbers, Letters and Icons/PauseIcon_Black.png
+PNG/Numbers, Letters and Icons/PauseIcon_White.png
+PNG/Numbers, Letters and Icons/PlayIcon_Black.png
+PNG/Numbers, Letters and Icons/RepeatIcon_Black.png
+PNG/Numbers, Letters and Icons/RepeatIcon_White.png
+PNG/Numbers, Letters and Icons/SettingsIcon_White.png
+PNG/Numbers, Letters and Icons/SettingsIcon_black.png
+PNG/Numbers, Letters and Icons/SlowerIcon_Black.png
+PNG/Numbers, Letters and Icons/SlowerIcon_White.png
+PNG/Numbers, Letters and Icons/SoundOffIcon_White.png
+PNG/Numbers, Letters and Icons/SoundOffIcon_black.png
+PNG/Numbers, Letters and Icons/SoundOnIcon_Black.png
+PNG/Numbers, Letters and Icons/SoundOnIcon_White.png
+PNG/Numbers, Letters and Icons/playIcon_White.png
 PNG/Pistol.png
 PNG/Spring.png
 data/default.fnt

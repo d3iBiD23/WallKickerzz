@@ -34,9 +34,10 @@ public class GameOverScreen implements Screen {
         table.center();
 
         TextButton retry = new TextButton("Intentar de nuevo", skin);
-        retry.sizeBy(10f);
+        retry.getLabel().setFontScale(4.5f);
         TextButton menu  = new TextButton("Volver al inicio", skin);
-        menu.sizeBy(10f);
+        menu.getLabel().setFontScale(4.5f);
+
         retry.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
@@ -52,7 +53,7 @@ public class GameOverScreen implements Screen {
             }
         });
 
-        table.add(retry).size(600, 100).pad(10).row();
+        table.add(retry).size(600, 100).pad(50).row();
         table.add(menu).size(600, 100).pad(10);
         stage.addActor(table);
 
