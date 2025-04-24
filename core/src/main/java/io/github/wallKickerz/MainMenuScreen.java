@@ -4,14 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
@@ -22,55 +22,81 @@ public class MainMenuScreen implements Screen {
     private Stage stage;
     private Skin skin;
     private Texture backgroundTexture;
+    private Texture buttonWideBg;
+    private static final float PLAY_BUTTON_SCALE = 4.5f; // Escala para botones
+    private static final float LETTER_SCALE = 2f;       // Escala para letras
+    private static final float LETTER_PAD = 25f;        // Padding entre letras
 
     public MainMenuScreen(final Main game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
-        skin  = new Skin(Gdx.files.internal("data/uiskin.json"));
+        skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+        Gdx.input.setInputProcessor(stage);
 
-        // Cargar y mostrar el fondo de juego
+        // Fondo de la pantalla
         backgroundTexture = new Texture(Gdx.files.internal("PNG/Background.png"));
         Image backgroundImage = new Image(backgroundTexture);
         backgroundImage.setFillParent(true);
         stage.addActor(backgroundImage);
 
-        // Tabla para organizar los elementos encima del fondo
-        Table table = new Table();
-        table.setFillParent(true);
-        table.center();
+        // Cargar fondo del botón
+        buttonWideBg = new Texture(Gdx.files.internal(
+            "PNG/Buttens and Headers/ButtonWide_Beighe.png"));
+        float btnWidth = buttonWideBg.getWidth() * PLAY_BUTTON_SCALE;
+        float btnHeight = buttonWideBg.getHeight() * PLAY_BUTTON_SCALE;
 
-        // Título del juego con fuente más grande
-        Label title = new Label("WallKickerz", skin);
-        title.setFontScale(8f);
+        // Tabla raíz
+        Table root = new Table();
+        root.setFillParent(true);
+        root.center();
 
-        // Botones con texto ampliado
-        TextButton play = new TextButton("Jugar", skin);
-        TextButton exit = new TextButton("Salir", skin);
-        play.getLabel().setFontScale(4.5f);
-        exit.getLabel().setFontScale(4.5f);
-
-        // Listeners de botones
-        play.addListener(new ChangeListener() {
+        // Botón JUGAR
+        Stack playStack = createLetterButton("JUGAR", btnWidth, btnHeight);
+        playStack.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+            public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new GameScreen(game));
                 dispose();
             }
         });
-        exit.addListener(new ChangeListener() {
+
+        // Botón SALIR
+        Stack exitStack = createLetterButton("SALIR", btnWidth, btnHeight);
+        exitStack.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+            public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
         });
 
-        // Añadir elementos a la tabla con tamaños mayores
-        table.add(title).padBottom(50).row();
-        table.add(play).size(600, 100).pad(50).row();
-        table.add(exit).size(600, 100).pad(20);
+        // Añadir botones
+        root.add(playStack).size(btnWidth, btnHeight).pad(200).row();
+        root.add(exitStack).size(btnWidth, btnHeight).pad(20);
+        stage.addActor(root);
+    }
 
-        stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
+    /**
+     * Crea un Stack con fondo de botón y las letras del texto dado.
+     */
+    private Stack createLetterButton(String text, float width, float height) {
+        Stack stack = new Stack();
+        // Fondo
+        Image bgImage = new Image(new TextureRegionDrawable(buttonWideBg));
+        bgImage.setSize(width, height);
+        stack.add(bgImage);
+        // Letras centradas
+        Table lettersTable = new Table();
+        lettersTable.center();
+        for (char c : text.toCharArray()) {
+            Texture letterTex = new Texture(Gdx.files.internal(
+                "PNG/Numbers, Letters and Icons/Letter_" + c + ".png"));
+            Image letterImg = new Image(letterTex);
+            letterImg.setOrigin(0, 0);
+            letterImg.setScale(LETTER_SCALE);
+            lettersTable.add(letterImg).pad(LETTER_PAD);
+        }
+        stack.add(lettersTable);
+        return stack;
     }
 
     @Override
@@ -96,5 +122,6 @@ public class MainMenuScreen implements Screen {
         stage.dispose();
         skin.dispose();
         backgroundTexture.dispose();
+        buttonWideBg.dispose();
     }
 }
