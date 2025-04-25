@@ -9,67 +9,70 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class PauseScreen implements Screen {
     private final Main game;
     private final GameScreen previousScreen;
     private Stage stage;
-    private Skin skin;
-    private OrthographicCamera hudCamera;
-    private Texture overlay;
+    // --- Copiado de MainMenuScreen ---
+    private Texture buttonWideBg;
+    private static final float BUTTON_SCALE = 4.5f;
+    private static final float LETTER_SCALE = 2f;
+    private static final float LETTER_PAD = 15f;
 
     public PauseScreen(Main game, GameScreen previousScreen) {
         this.game = game;
         this.previousScreen = previousScreen;
 
-        // Stage para botones
         stage = new Stage(new ScreenViewport());
-        skin = new Skin(Gdx.files.internal("data/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
-        // Cámara HUD para overlay
-        hudCamera = new OrthographicCamera();
-        hudCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        // 1) Carga la textura del fondo de botón
+        buttonWideBg = new Texture(Gdx.files.internal(
+            "PNG/Buttens and Headers/ButtonWide_Beighe.png"
+        ));
 
-        // Textura semitransparente negra para oscurecer fondo
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(0, 0, 0, 0.5f);
-        pixmap.fill();
-        overlay = new Texture(pixmap);
-        pixmap.dispose();
+        float btnW = buttonWideBg.getWidth() * BUTTON_SCALE;
+        float btnH = buttonWideBg.getHeight() * BUTTON_SCALE;
 
-        // UI de pausa
-        Table table = new Table(skin);
-        table.setFillParent(true);
-        table.center();
+        // 2) Monta la UI usando createLetterButton
+        Table root = new Table();
+        root.setFillParent(true);
+        root.center();
 
-        TextButton resumeBtn = new TextButton("Reanudar", skin);
-        TextButton menuBtn   = new TextButton("Menu Principal", skin);
-        resumeBtn.getLabel().setFontScale(3f);
-        menuBtn.getLabel().setFontScale(3f);
-
-        resumeBtn.addListener(new ChangeListener() {
+        // Botón “Reanudar”
+        Stack resumeBtn = createLetterButton("REANUDAR", btnW, btnH);
+        resumeBtn.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeListener.ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
+            public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(previousScreen);
             }
         });
-        menuBtn.addListener(new ChangeListener() {
+
+        // Botón “Menu Principal” (sin espacio: usaremos guión bajo para salto)
+        Stack menuBtn = createLetterButton("MENU_PRINCIPAL", btnW, btnH);
+        menuBtn.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeListener.ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
+            public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new MainMenuScreen(game));
             }
         });
 
-        table.add(resumeBtn).size(400, 100).pad(20).row();
-        table.add(menuBtn)  .size(400, 100).pad(20);
-        stage.addActor(table);
+        root.add(resumeBtn).size(btnW, btnH).pad(200).row();
+        root.add(menuBtn).size(btnW, btnH).pad(20);
+
+        stage.addActor(root);
     }
 
     @Override
@@ -77,28 +80,58 @@ public class PauseScreen implements Screen {
 
     }
 
+    private Stack createLetterButton(String text, float width, float height) {
+        Stack stack = new Stack();
+        Image bg = new Image(new TextureRegionDrawable(buttonWideBg));
+        bg.setSize(width, height);
+        stack.add(bg);
+
+        Table mainTable = new Table();
+        mainTable.center();
+
+        String[] lines = text.split("_");
+
+        for (int i = 0; i < lines.length; i++) {
+            String line = lines[i];
+
+            Table lineTable = new Table();
+            lineTable.center();
+
+            for (char c : line.toCharArray()) {
+                Texture lt = new Texture(Gdx.files.internal(
+                    "PNG/Numbers, Letters and Icons/Letter_" + c + ".png"
+                ));
+                Image img = new Image(lt);
+                img.setOrigin(0, 0);
+                img.setScale(LETTER_SCALE);
+                lineTable.add(img).pad(LETTER_PAD);
+            }
+
+            if (i < lines.length - 1) {
+                // Si no es la última línea, añadimos padding inferior
+                mainTable.add(lineTable).padBottom(30f).row(); // <<--- aquí pones el padding que quieras
+            } else {
+                // Última línea, sin padding extra
+                mainTable.add(lineTable).row();
+            }
+        }
+
+        stack.add(mainTable);
+        return stack;
+    }
+
     @Override
     public void render(float delta) {
-        // Render del juego en pausa (frame estático)
         previousScreen.render(0f);
-
-        // Dibujar overlay semitransparente
-        SpriteBatch batch = game.getBatch();
-        batch.setProjectionMatrix(hudCamera.combined);
-        batch.begin();
-        batch.setColor(1, 1, 1, 1);
-        batch.draw(overlay, 0, 0, hudCamera.viewportWidth, hudCamera.viewportHeight);
-        batch.end();
-
-        // Dibujar interfaz de pausa encima
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         stage.act(delta);
         stage.draw();
     }
 
     @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-        hudCamera.setToOrtho(false, width, height);
+    public void resize(int w, int h) {
+        stage.getViewport().update(w, h, true);
     }
 
     @Override
@@ -116,11 +149,8 @@ public class PauseScreen implements Screen {
 
     }
 
-    @Override
-    public void dispose() {
+    @Override public void dispose(){
         stage.dispose();
-        skin.dispose();
-        overlay.dispose();
+        buttonWideBg.dispose();
     }
-
 }
