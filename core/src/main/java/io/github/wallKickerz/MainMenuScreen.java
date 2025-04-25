@@ -25,7 +25,7 @@ public class MainMenuScreen implements Screen {
     private Texture buttonWideBg;
     private static final float PLAY_BUTTON_SCALE = 4.5f; // Escala para botones
     private static final float LETTER_SCALE = 2f;       // Escala para letras
-    private static final float LETTER_PAD = 15f;        // Padding entre letras
+    private static final float LETTER_PAD = 25f;        // Padding entre letras
 
     public MainMenuScreen(final Main game) {
         this.game = game;

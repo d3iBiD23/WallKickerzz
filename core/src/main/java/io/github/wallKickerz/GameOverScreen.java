@@ -4,16 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class GameOverScreen implements Screen {
@@ -21,20 +17,14 @@ public class GameOverScreen implements Screen {
     private Stage stage;
     private Skin skin;
     private Texture backgroundTexture;
-    private Texture buttonWideBg;
-
-    private static final float BUTTON_SCALE = 5.5f;
-    private static final float LETTER_SCALE = 2f;
-    private static final float LETTER_PAD = 15f;
-    private static final float LINE_SPACING = 30f; // espacio entre líneas
 
     public GameOverScreen(final Main game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
+        skin = new Skin(Gdx.files.internal("data/uiskin.json")); // pon aquí tu skin
+
 
         backgroundTexture = new Texture(Gdx.files.internal("PNG/Background.png"));
-        buttonWideBg = new Texture(Gdx.files.internal("PNG/Buttens and Headers/ButtonWide_Beighe.png"));
-
         Image backgroundImage = new Image(backgroundTexture);
         backgroundImage.setFillParent(true);
         stage.addActor(backgroundImage);
@@ -43,73 +33,31 @@ public class GameOverScreen implements Screen {
         table.setFillParent(true);
         table.center();
 
-        float btnW = buttonWideBg.getWidth() * BUTTON_SCALE;
-        float btnH = buttonWideBg.getHeight() * BUTTON_SCALE;
+        TextButton retry = new TextButton("Intentar de nuevo", skin);
+        retry.getLabel().setFontScale(4.5f);
+        TextButton menu  = new TextButton("Volver al inicio", skin);
+        menu.getLabel().setFontScale(4.5f);
 
-        // Botón "Intentar de nuevo" (en 2 líneas: "INTENTAR" + "DE NUEVO")
-        Stack retryBtn = createLetterButton("INTENTAR_DE_NUEVO", btnW, btnH);
-        retryBtn.addListener(new ClickListener() {
+        retry.addListener(new ChangeListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
                 game.setScreen(new GameScreen(game));
                 dispose();
             }
         });
-
-        // Botón "Volver al inicio" (en 2 líneas también)
-        Stack menuBtn = createLetterButton("VOLVER_AL_INICIO", btnW, btnH);
-        menuBtn.addListener(new ClickListener() {
+        menu.addListener(new ChangeListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MainMenuScreen(game));
+            public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
+                game.setScreen(new MainMenuScreen(game)); // o la pantalla que sea tu menú
                 dispose();
             }
         });
 
-        table.add(retryBtn).size(btnW, btnH).pad(50).row();
-        table.add(menuBtn).size(btnW, btnH).pad(10);
-
+        table.add(retry).size(600, 100).pad(50).row();
+        table.add(menu).size(600, 100).pad(10);
         stage.addActor(table);
 
         Gdx.input.setInputProcessor(stage);
-    }
-
-    private Stack createLetterButton(String text, float width, float height) {
-        Stack stack = new Stack();
-        Image bg = new Image(new TextureRegionDrawable(buttonWideBg));
-        bg.setSize(width, height);
-        stack.add(bg);
-
-        Table mainTable = new Table();
-        mainTable.center();
-
-        String[] lines = text.split("_");
-
-        for (int i = 0; i < lines.length; i++) {
-            String line = lines[i];
-
-            Table lineTable = new Table();
-            lineTable.center();
-
-            for (char c : line.toCharArray()) {
-                Texture lt = new Texture(Gdx.files.internal(
-                    "PNG/Numbers, Letters and Icons/Letter_" + c + ".png"
-                ));
-                Image img = new Image(lt);
-                img.setOrigin(0, 0);
-                img.setScale(LETTER_SCALE);
-                lineTable.add(img).pad(LETTER_PAD);
-            }
-
-            if (i < lines.length - 1) {
-                mainTable.add(lineTable).padBottom(LINE_SPACING).row();
-            } else {
-                mainTable.add(lineTable).row();
-            }
-        }
-
-        stack.add(mainTable);
-        return stack;
     }
 
     @Override
@@ -121,31 +69,13 @@ public class GameOverScreen implements Screen {
     }
 
     // implementa los métodos vacíos
-    @Override
-    public void resize(int w, int h) {
-        stage.getViewport().update(w, h, true);
-    }
-
-    @Override
-    public void show() {
-    }
-
-    @Override
-    public void hide() {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void dispose() {
+    @Override public void resize(int w,int h){ stage.getViewport().update(w,h,true); }
+    @Override public void show() {}
+    @Override public void hide() {}
+    @Override public void pause() {}
+    @Override public void resume() {}
+    @Override public void dispose() {
         stage.dispose();
-        backgroundTexture.dispose();
-        buttonWideBg.dispose();
+        skin.dispose();
     }
 }
