@@ -33,11 +33,13 @@ public class GameScreen implements Screen {
     private static final float PADDING = 100f;
     private static final float ICON_SCALE = 2f;
     private static final float BG_SCALE = 2f;
+    private Score score;
 
     public GameScreen(Main game) {
         this.game = game;
         this.assetManager = new AssetManager();
         this.player = new Player(assetManager);
+        this.score = new Score();
 
         // Carga de texturas HUD
         buttonBg = new Texture(Gdx.files.internal("PNG/Buttens and Headers/ButtonSquare_Beighe.png"));
@@ -103,6 +105,8 @@ public class GameScreen implements Screen {
         if (playerY > worldCamera.position.y) camY = playerY;
         worldCamera.position.set(camX, camY, 0);
         worldCamera.update();
+        float playerCenterY = player.getHitbox().y + player.getHitbox().height / 2f;
+        score.update(playerCenterY);
 
         // Game Over
         float bottomEdge = worldCamera.position.y - worldCamera.viewportHeight / 2f;
@@ -131,6 +135,11 @@ public class GameScreen implements Screen {
         float iconX = buttonBounds.x + (buttonBounds.width - iconW) / 2f;
         float iconY = buttonBounds.y + (buttonBounds.height - iconH) / 2f;
         batch.draw(pauseIcon, iconX, iconY, iconW, iconH);
+
+        // score
+        float scoreX = 20f;
+        float scoreY = hudCamera.viewportHeight - 20f;
+        score.render(batch, scoreX, scoreY);
         batch.end();
     }
 
@@ -184,5 +193,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         assetManager.dispose();
+        score.dispose();
     }
 }
