@@ -15,13 +15,13 @@ public class Score {
 
     public Score() {
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(
-            Gdx.files.internal("font/Schoolbell-Regular.ttf")  // tu fuente :contentReference[oaicite:0]{index=0}:contentReference[oaicite:1]{index=1}
+            Gdx.files.internal("font/Schoolbell-Regular.ttf")
         );
         FreeTypeFontGenerator.FreeTypeFontParameter param =
             new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-        param.size = 48;            // ajusta el tamaño a tu gusto
-        param.color = Color.WHITE;  // color de la fuente
+        param.size = 120;  // Tamaño de la fuente más grande
+        param.color = Color.ROYAL;  // Color de la fuente (negro para contraste)
         font = gen.generateFont(param);
         gen.dispose();
 
@@ -41,7 +41,7 @@ public class Score {
         String text = "Score: " + score;
         layout.setText(font, text);
         float x = (viewportWidth - layout.width) / 2f;
-        float y = viewportHeight - 20f;
+        float y = viewportHeight - layout.height - 150f;  // Posición abajo de la pantalla
         font.draw(batch, layout, x, y);
     }
 
