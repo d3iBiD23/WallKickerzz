@@ -21,7 +21,9 @@ public class Score {
             new FreeTypeFontGenerator.FreeTypeFontParameter();
 
         param.size = 120;  // Tamaño de la fuente más grande
-        param.color = Color.ROYAL;  // Color de la fuente (negro para contraste)
+        param.color = Color.WHITE;  // Color de la fuente (negro para contraste)
+        param.borderWidth = 8;  // Ancho del contorno
+        param.borderColor = Color.BLACK;  // Color del contorno (blanco)
         font = gen.generateFont(param);
         gen.dispose();
 
