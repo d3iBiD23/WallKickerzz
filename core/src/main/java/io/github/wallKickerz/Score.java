@@ -1,5 +1,6 @@
 package io.github.wallKickerz;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,8 +12,8 @@ public class Score {
     private float highestY;
 
     public Score() {
-        font = new BitmapFont();               // fuente por defecto
-        font.getData().setScale(2f);           // escala a tu gusto
+        font = new BitmapFont();
+        font.getData().setScale(2f);
         layout = new GlyphLayout();
         score = 0;
         highestY = 0f;
@@ -21,7 +22,7 @@ public class Score {
     public void update(float playerY) {
         if (playerY > highestY) {
             highestY = playerY;
-            score = (int) highestY;             // convertir la altura en puntos
+            score = (int) highestY;
         }
     }
 
