@@ -231,3 +231,4 @@ data/uiskin_data/textfield.9.png
 data/uiskin_data/tree-minus.png
 data/uiskin_data/tree-plus.png
 data/uiskin_data/white.png
+font/Schoolbell-Regular.ttf

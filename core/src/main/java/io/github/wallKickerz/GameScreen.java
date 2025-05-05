@@ -105,6 +105,7 @@ public class GameScreen implements Screen {
         if (playerY > worldCamera.position.y) camY = playerY;
         worldCamera.position.set(camX, camY, 0);
         worldCamera.update();
+
         float playerCenterY = player.getHitbox().y + player.getHitbox().height / 2f;
         score.update(playerCenterY);
 
@@ -137,9 +138,10 @@ public class GameScreen implements Screen {
         batch.draw(pauseIcon, iconX, iconY, iconW, iconH);
 
         // score
-        float scoreX = 20f;
-        float scoreY = hudCamera.viewportHeight - 20f;
-        score.render(batch, scoreX, scoreY);
+        score.render(batch,
+            hudCamera.viewportWidth,
+            hudCamera.viewportHeight
+        );
         batch.end();
     }
 
