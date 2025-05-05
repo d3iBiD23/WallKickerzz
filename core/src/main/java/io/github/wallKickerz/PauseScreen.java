@@ -44,7 +44,7 @@ public class PauseScreen implements Screen {
         root.center();
 
         // Botón “Reanudar”
-        Stack resumeBtn = createLetterButton("REANUDAR", btnW, btnH);
+        Stack resumeBtn = createLetterButton("RESUME", btnW, btnH);
         resumeBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -53,7 +53,7 @@ public class PauseScreen implements Screen {
         });
 
         // Botón “Menu Principal” (sin espacio: usaremos guión bajo para salto)
-        Stack menuBtn = createLetterButton("MENU_PRINCIPAL", btnW, btnH);
+        Stack menuBtn = createLetterButton("BACK_TO_MENU", btnW, btnH);
         menuBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {

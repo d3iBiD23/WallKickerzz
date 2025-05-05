@@ -43,7 +43,7 @@ public class GameOverScreen implements Screen {
         float btnH = buttonWideBg.getHeight() * BUTTON_SCALE;
 
         // Botón "Intentar de nuevo" (en 2 líneas: "INTENTAR" + "DE NUEVO")
-        Stack retryBtn = createLetterButton("INTENTAR_DE_NUEVO", btnW, btnH);
+        Stack retryBtn = createLetterButton("TRY_AGAIN", btnW, btnH);
         retryBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -53,7 +53,7 @@ public class GameOverScreen implements Screen {
         });
 
         // Botón "Volver al inicio" (en 2 líneas también)
-        Stack menuBtn = createLetterButton("VOLVER_AL_INICIO", btnW, btnH);
+        Stack menuBtn = createLetterButton("BACK_TO_MENU", btnW, btnH);
         menuBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

@@ -51,7 +51,7 @@ public class MainMenuScreen implements Screen {
         root.center();
 
         // Botón JUGAR
-        Stack playStack = createLetterButton("JUGAR", btnWidth, btnHeight);
+        Stack playStack = createLetterButton("PLAY", btnWidth, btnHeight);
         playStack.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -61,7 +61,7 @@ public class MainMenuScreen implements Screen {
         });
 
         // Botón SALIR
-        Stack exitStack = createLetterButton("SALIR", btnWidth, btnHeight);
+        Stack exitStack = createLetterButton("EXIT", btnWidth, btnHeight);
         exitStack.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
