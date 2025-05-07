@@ -42,6 +42,10 @@ public class Player {
         }
     }
 
+    public void jumpHigher() {
+        this.velocityY = 800f; // o cualquier valor más alto que tu salto normal
+    }
+
     public void update(float delta, Array<Platform> platforms) {
         // Aplicar gravedad
         velocityY += GRAVITY * delta;
@@ -86,5 +90,9 @@ public class Player {
 
     public Rectangle getHitbox() {
         return hitbox;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 }

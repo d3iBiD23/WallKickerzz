@@ -23,7 +23,7 @@ public class GameScreen implements Screen {
     private OrthographicCamera hudCamera;  // Cámara para interfaz fija
 
     private float initialCameraY;
-    private float highestPlatformY;       // Guarda la Y más alta de las plataformas
+    private float highestPlatformY; // Guarda la Y más alta de las plataformas
     private static final float SPAWN_GAP_MIN = 150f;  // mínimo espacio vertical entre plataformas
     private static final float SPAWN_GAP_MAX = 300f;  // máximo espacio vertical
 
@@ -34,6 +34,9 @@ public class GameScreen implements Screen {
     private static final float ICON_SCALE = 2f;
     private static final float BG_SCALE = 2f;
     private Score score;
+    private Texture springTexture;
+    private Array<Spring> springs;
+
 
     public GameScreen(Main game) {
         this.game = game;
@@ -67,6 +70,13 @@ public class GameScreen implements Screen {
         for (Platform p : platforms) {
             highestPlatformY = Math.max(highestPlatformY, p.getY());
         }
+
+        springTexture = new Texture(Gdx.files.internal("PNG/Spring.png"));
+        springs = new Array<>();
+
+        // Ejemplo: añadir un muelle sobre cierta plataforma
+        springs.add(new Spring(springTexture, 300, 250));  // posición ejemplo
+        springs.add(new Spring(springTexture, 500, 450));
     }
 
     private Array<Platform> createInitialPlatforms(AssetManager assetManager) {
@@ -142,6 +152,10 @@ public class GameScreen implements Screen {
             hudCamera.viewportWidth,
             hudCamera.viewportHeight
         );
+
+        for (Spring spring : springs) {
+            spring.render(batch);
+        }
         batch.end();
     }
 
@@ -170,6 +184,18 @@ public class GameScreen implements Screen {
                 it.remove();
             }
         }
+        for (Spring spring : springs) {
+            if (player.getHitbox().overlaps(spring.getBounds())) {
+                // Reposicionar el jugador por encima del muelle (opcional)
+                player.setY(spring.getY() + spring.getBounds().height);
+
+                // Aplicar salto potenciado
+                player.jumpHigher();
+
+                break;  // sólo un muelle por frame
+            }
+        }
+
     }
 
     @Override
@@ -195,6 +221,9 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         assetManager.dispose();
+        for (Spring spring : springs) {
+            spring.dispose();
+        }
         score.dispose();
     }
 }
