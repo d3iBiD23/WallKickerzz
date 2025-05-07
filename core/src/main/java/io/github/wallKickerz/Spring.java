@@ -28,6 +28,10 @@ public class Spring extends Rectangle{
         return y;
     }
 
+    public float getHeight() {
+        return bounds.height;
+    }
+
     public void update(float delta) {
         bounds.setPosition(x, y); // por si se mueve
     }

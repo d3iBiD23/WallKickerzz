@@ -73,6 +73,7 @@ public class GameScreen implements Screen {
         buttonBounds = new Rectangle(x, y, bgW, bgH);
 
         // SPRINGS texture
+        this.springTexture = assetManager.getSpringTexture();
         springs = new Array<>();
 
         // Plataformas iniciales
@@ -226,7 +227,7 @@ public class GameScreen implements Screen {
         Iterator<Spring> it = springs.iterator();
         while (it.hasNext()) {
             Spring spring = it.next();
-            if (spring.getY() + springTexture.getHeight() < bottomEdge) {
+            if (spring.getY() + spring.getHeight() < bottomEdge) {
                 spring.dispose();
                 it.remove();
             }
