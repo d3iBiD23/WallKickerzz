@@ -18,6 +18,10 @@ public class Player {
     private float velocityY = 0;
     private float velocityX = 0;
 
+    public float getVelocityY() {
+        return velocityY;
+    }
+
     public Player(AssetManager assetManager) {
         this.texture = assetManager.getPlayerTexture();
         float width = texture.getRegionWidth() * SCALE;

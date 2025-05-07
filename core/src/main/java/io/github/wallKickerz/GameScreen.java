@@ -134,7 +134,7 @@ public class GameScreen implements Screen {
         player.update(delta, platforms);
         updatePlatforms();
         updateSprings(delta);
-        checkSpringCollisions();
+        checkSpringCollisions(delta);
 
         // Mover cámara de mundo
         float camX = Gdx.graphics.getWidth() / 2f;
@@ -187,15 +187,28 @@ public class GameScreen implements Screen {
     /**
      * Comprueba colisiones con muelles
      */
-    private void checkSpringCollisions() {
+    private void checkSpringCollisions(float delta) {
+        Rectangle hitbox = player.getHitbox();
         for (Spring spring : springs) {
-            if (player.getHitbox().overlaps(spring.getBounds())) {
-                // Reposicionar el jugador por encima del muelle (opcional)
-                player.setY(spring.getY() + spring.getBounds().height);
+            Rectangle s = spring.getBounds();
 
-                // Aplicar salto potenciado
+            // 1) Sólo si el jugador está cayendo
+            if (player.getVelocityY() > 0) continue;
+
+            // 2) Altura de los pies antes y después de moverse
+            float prevFeetY = hitbox.y - player.getVelocityY() * delta;
+            boolean hitsFromAbove = hitbox.y <= s.y + s.height
+                && prevFeetY >= s.y + s.height;
+
+            // 3) Comprobación en X
+            boolean overlapsX = hitbox.x + hitbox.width  > s.x
+                && hitbox.x                 < s.x + s.width;
+
+            if (hitsFromAbove && overlapsX) {
+                // Reposiciona justo encima
+                player.setY(s.y + s.height);
                 player.jumpHigher();
-                break;  // sólo un muelle por frame
+                break;
             }
         }
     }
