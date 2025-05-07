@@ -6,21 +6,28 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Spring {
+
+    private static final float SPRING_SCALE = 2f;
     private Texture texture;
     private Rectangle bounds;
     private TextureRegion region;
     private float x, y;
+    private float width, height;
 
     public Spring(Texture texture, float x, float y) {
         this.texture = texture;
+        this.region = new TextureRegion(texture);
+        this.width = texture.getWidth() * SPRING_SCALE;
+        this.height = texture.getHeight() * SPRING_SCALE;
+
         this.x = x;
         this.y = y;
-        this.region = new TextureRegion(texture);
-        bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
+
+        bounds = new Rectangle(x, y, width, height);
     }
 
     public void render(SpriteBatch batch) {
-        batch.draw(region, x, y);
+        batch.draw(region, x, y, width, height);
     }
 
     public Rectangle getBounds() {
@@ -32,13 +39,14 @@ public class Spring {
     }
 
     public float getHeight() {
-        return bounds.height;
+        return height;
     }
 
     public void update(float delta) {
-        bounds.setPosition(x, y); // por si se mueve
+        bounds.setPosition(x, y);
     }
 
     public void dispose() {
+        // Nada que hacer si no creas Textures manualmente
     }
 }

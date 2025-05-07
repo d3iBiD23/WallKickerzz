@@ -109,10 +109,12 @@ public class GameScreen implements Screen {
      */
     private void createSpringOnPlatform(Platform platform) {
         Texture springTexture = assetManager.getSpringTexture();
-        // Calcular la posición x centrada en la plataforma
-        float springX = platform.getX() + (platform.getWidth() / 2f) - (springTexture.getWidth() / 2f);
-        // Colocar el muelle justo encima de la plataforma
-        float springY = platform.getY() + platform.getHeight();
+        float springWidth = springTexture.getWidth() * 1.5f;  // Usa el mismo SPRING_SCALE
+        float springHeight = springTexture.getHeight() * 1.5f;
+
+        float springX = platform.getX() + (platform.getWidth() / 2f) - (springWidth / 2f);
+        float springY = platform.getY() + platform.getHeight();  // Justo encima
+
         springs.add(new Spring(springTexture, springX, springY));
     }
 
