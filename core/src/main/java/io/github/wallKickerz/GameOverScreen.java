@@ -22,16 +22,16 @@ public class GameOverScreen implements Screen {
     private Stage stage;
     private Texture backgroundTexture;
     private Texture buttonWideBg;
-
     private static final float BUTTON_SCALE = 5.5f;
     private static final float LETTER_SCALE = 2f;
     private static final float LETTER_PAD = 15f;
-    private static final float LINE_SPACING = 30f; // espacio entre líneas
+    private static final float LINE_SPACING = 30f;
 
     public GameOverScreen(final Main game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
 
+        // Configuración de fondo
         backgroundTexture = new Texture(Gdx.files.internal("PNG/Background.png"));
         buttonWideBg = new Texture(Gdx.files.internal("PNG/Buttens and Headers/ButtonWide_Beighe.png"));
 
@@ -39,14 +39,52 @@ public class GameOverScreen implements Screen {
         backgroundImage.setFillParent(true);
         stage.addActor(backgroundImage);
 
-        Table table = new Table();
-        table.setFillParent(true);
-        table.center();
+        // Tabla principal
+        Table mainTable = new Table();
+        mainTable.setFillParent(true);
+        stage.addActor(mainTable);
 
+        // Configuración de botones
         float btnW = buttonWideBg.getWidth() * BUTTON_SCALE;
         float btnH = buttonWideBg.getHeight() * BUTTON_SCALE;
 
-        // Botón "Intentar de nuevo" (en 2 líneas: "INTENTAR" + "DE NUEVO")
+        // Tabla para los scores
+        Table scoreTable = new Table();
+
+        // Fuentes
+        FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("font/Schoolbell-Regular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        // Título Game Over
+        param.size = 180;
+        param.color = Color.WHITE;
+        param.borderWidth = 12;
+        param.borderColor = Color.BLACK;
+        BitmapFont titleFont = gen.generateFont(param);
+        Label titleLabel = new Label("GAME OVER", new Label.LabelStyle(titleFont, Color.WHITE));
+        scoreTable.add(titleLabel).padBottom(160f).row();
+
+        // Scores
+        int finalScore = game.getCurrentScore();
+        int highScore = game.getHighScore();
+
+        // High score
+        param.size = 100;
+        BitmapFont highScoreFont = gen.generateFont(param);
+        Label highScoreLabel = new Label("High Score: " + highScore, new Label.LabelStyle(highScoreFont, Color.WHITE));
+        scoreTable.add(highScoreLabel).padBottom(90f).row();;
+
+        // Score actual
+        param.size = 90;
+        BitmapFont scoreFont = gen.generateFont(param);
+        Label scoreLabel = new Label("Your Score: " + finalScore, new Label.LabelStyle(scoreFont, Color.WHITE));
+        scoreTable.add(scoreLabel).padBottom(90f);
+
+
+        // Añadir scores a la tabla principal
+        mainTable.add(scoreTable).colspan(1).row();
+
+        // Botones
         Stack retryBtn = createLetterButton("TRY_AGAIN", btnW, btnH);
         retryBtn.addListener(new ClickListener() {
             @Override
@@ -56,7 +94,6 @@ public class GameOverScreen implements Screen {
             }
         });
 
-        // Botón "Volver al inicio" (en 2 líneas también)
         Stack menuBtn = createLetterButton("BACK_TO_MENU", btnW, btnH);
         menuBtn.addListener(new ClickListener() {
             @Override
@@ -66,45 +103,14 @@ public class GameOverScreen implements Screen {
             }
         });
 
-        table.add(retryBtn).size(btnW, btnH).pad(50).row();
-        table.add(menuBtn).size(btnW, btnH).pad(10);
+        // Tabla para botones
+        Table buttonsTable = new Table();
+        buttonsTable.add(retryBtn).size(btnW, btnH).pad(20).row();
+        buttonsTable.add(menuBtn).size(btnW, btnH).pad(20);
 
-        stage.addActor(table);
+        mainTable.add(buttonsTable).center();
 
         Gdx.input.setInputProcessor(stage);
-
-
-        // SCORES
-
-        Table scoreTable = new Table();
-        scoreTable.center();
-
-        // Obtener los scores del juego
-        int finalScore = game.getCurrentScore();
-        int highScore = game.getHighScore();
-
-        // Crear fuentes para mostrar los scores
-        FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("font/Schoolbell-Regular.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
-
-        // Fuente para el score final
-        param.size = 80;
-        param.color = Color.WHITE;
-        param.borderWidth = 5;
-        param.borderColor = Color.BLACK;
-        BitmapFont scoreFont = gen.generateFont(param);
-
-        // Fuente para el high score
-        param.size = 60;
-        BitmapFont highScoreFont = gen.generateFont(param);
-
-        // Mostrar scores
-        scoreTable.add(new Label("Your Score: " + finalScore, new Label.LabelStyle(scoreFont, Color.WHITE))).row();
-        scoreTable.add(new Label("High Score: " + highScore, new Label.LabelStyle(highScoreFont, Color.WHITE))).padTop(30f);
-
-        // Añadir la tabla de scores a la tabla principal
-        table.add(scoreTable).colspan(2).padBottom(100f).row();
-
         gen.dispose();
     }
 
@@ -118,17 +124,14 @@ public class GameOverScreen implements Screen {
         mainTable.center();
 
         String[] lines = text.split("_");
-
         for (int i = 0; i < lines.length; i++) {
             String line = lines[i];
-
             Table lineTable = new Table();
             lineTable.center();
 
             for (char c : line.toCharArray()) {
                 Texture lt = new Texture(Gdx.files.internal(
-                    "PNG/Numbers, Letters and Icons/Letter_" + c + ".png"
-                ));
+                    "PNG/Numbers, Letters and Icons/Letter_" + c + ".png"));
                 Image img = new Image(lt);
                 img.setOrigin(0, 0);
                 img.setScale(LETTER_SCALE);
@@ -154,7 +157,7 @@ public class GameOverScreen implements Screen {
         stage.draw();
     }
 
-    @Override public void resize(int w,int h){ stage.getViewport().update(w,h,true); }
+    @Override public void resize(int w, int h) { stage.getViewport().update(w, h, true); }
     @Override public void show() {}
     @Override public void hide() {}
     @Override public void pause() {}

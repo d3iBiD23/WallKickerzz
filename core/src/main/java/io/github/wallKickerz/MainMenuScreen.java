@@ -30,6 +30,7 @@ public class MainMenuScreen implements Screen {
     private static final float PLAY_BUTTON_SCALE = 4.5f; // Escala para botones
     private static final float LETTER_SCALE = 2f; // Escala para letras
     private static final float LETTER_PAD = 15f; // Padding entre letras
+    private static final float TITLE_SCALE = 1.5f; // Escala para el título
 
     public MainMenuScreen(final Main game) {
         this.game = game;
@@ -37,24 +38,50 @@ public class MainMenuScreen implements Screen {
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
         Gdx.input.setInputProcessor(stage);
 
-        // Fondo de la pantalla
+        // Fondo
         backgroundTexture = new Texture(Gdx.files.internal("PNG/Background.png"));
         Image backgroundImage = new Image(backgroundTexture);
         backgroundImage.setFillParent(true);
         stage.addActor(backgroundImage);
 
-        // Cargar fondo del botón
+        // Textura de botón
         buttonWideBg = new Texture(Gdx.files.internal(
             "PNG/Buttens and Headers/ButtonWide_Beighe.png"));
         float btnWidth = buttonWideBg.getWidth() * PLAY_BUTTON_SCALE;
         float btnHeight = buttonWideBg.getHeight() * PLAY_BUTTON_SCALE;
 
-        // Tabla raíz
-        Table root = new Table();
-        root.setFillParent(true);
-        root.center();
+        // Tabla principal
+        Table mainTable = new Table();
+        mainTable.setFillParent(true);
+        stage.addActor(mainTable);
 
-        // Botón JUGAR
+        // Tabla para el título y high score
+        Table headerTable = new Table();
+
+        // Fuente para el título
+        FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("font/Schoolbell-Regular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        param.size = 160;
+        param.color = Color.WHITE;
+        param.borderWidth = 12;
+        param.borderColor = Color.BLACK;
+        BitmapFont titleFont = gen.generateFont(param);
+
+        // Título del juego
+        Label titleLabel = new Label("WALL KICKERZ", new Label.LabelStyle(titleFont, Color.WHITE));
+        headerTable.add(titleLabel).padBottom(90f).row();
+
+        // High Score
+        param.size = 100;
+        BitmapFont highScoreFont = gen.generateFont(param);
+        int highScore = PreferencesManager.getHighScore();
+        Label highScoreLabel = new Label("High Score: " + highScore, new Label.LabelStyle(highScoreFont, Color.WHITE));
+        headerTable.add(highScoreLabel).padBottom(600f);
+
+        // Añadir header a la tabla principal
+        mainTable.add(headerTable).colspan(1).row();
+
+        // Botones
         Stack playStack = createLetterButton("PLAY", btnWidth, btnHeight);
         playStack.addListener(new ClickListener() {
             @Override
@@ -64,7 +91,6 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        // Botón SALIR
         Stack exitStack = createLetterButton("EXIT", btnWidth, btnHeight);
         exitStack.addListener(new ClickListener() {
             @Override
@@ -73,32 +99,12 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        // Añadir botones
-        root.add(playStack).size(btnWidth, btnHeight).pad(200).row();
-        root.add(exitStack).size(btnWidth, btnHeight).pad(20);
-        stage.addActor(root);
+        // Añadir botones centrados
+        Table buttonsTable = new Table();
+        buttonsTable.add(playStack).size(btnWidth, btnHeight).pad(20).row();
+        buttonsTable.add(exitStack).size(btnWidth, btnHeight).pad(20);
 
-        // Crear tabla para el high score
-        Table highScoreTable = new Table();
-        highScoreTable.center();
-
-        // Obtener el high score
-        int highScore = PreferencesManager.getHighScore();
-
-        // Crear fuente para el high score
-        FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("font/Schoolbell-Regular.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        param.size = 60;
-        param.color = Color.WHITE;
-        param.borderWidth = 5;
-        param.borderColor = Color.BLACK;
-        BitmapFont highScoreFont = gen.generateFont(param);
-
-        // Mostrar high score
-        highScoreTable.add(new Label("High Score: " + highScore, new Label.LabelStyle(highScoreFont, Color.WHITE)));
-
-        // Añadir la tabla de high score a la tabla principal
-        root.add(highScoreTable).colspan(2).padBottom(50f).row();
+        mainTable.add(buttonsTable).center();
 
         gen.dispose();
     }
@@ -108,11 +114,10 @@ public class MainMenuScreen implements Screen {
      */
     private Stack createLetterButton(String text, float width, float height) {
         Stack stack = new Stack();
-        // Fondo
         Image bgImage = new Image(new TextureRegionDrawable(buttonWideBg));
         bgImage.setSize(width, height);
         stack.add(bgImage);
-        // Letras centradas
+
         Table lettersTable = new Table();
         lettersTable.center();
         for (char c : text.toCharArray()) {
