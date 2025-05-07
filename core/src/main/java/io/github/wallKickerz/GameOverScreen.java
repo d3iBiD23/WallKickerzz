@@ -55,12 +55,13 @@ public class GameOverScreen implements Screen {
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("font/Schoolbell-Regular.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-        // Título Game Over
-        param.size = 180;
-        param.color = Color.WHITE;
-        param.borderWidth = 12;
-        param.borderColor = Color.BLACK;
-        BitmapFont titleFont = gen.generateFont(param);
+        // ===== TÍTULO GAME OVER =====
+        FreeTypeFontGenerator.FreeTypeFontParameter titleParam = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        titleParam.size = 180;
+        titleParam.color = Color.WHITE;
+        titleParam.borderWidth = 12; // borde más grueso
+        titleParam.borderColor = Color.BLACK;
+        BitmapFont titleFont = gen.generateFont(titleParam);
         Label titleLabel = new Label("GAME OVER", new Label.LabelStyle(titleFont, Color.WHITE));
         scoreTable.add(titleLabel).padBottom(160f).row();
 
@@ -68,15 +69,28 @@ public class GameOverScreen implements Screen {
         int finalScore = game.getCurrentScore();
         int highScore = game.getHighScore();
 
+        // ===== HIGH SCORE =====
+        FreeTypeFontGenerator.FreeTypeFontParameter highScoreParam = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        highScoreParam.size = 100;
+        highScoreParam.color = Color.WHITE;
+        highScoreParam.borderWidth = 8f; // borde más fino
+        highScoreParam.borderColor = Color.BLACK;
+        BitmapFont highScoreFont = gen.generateFont(highScoreParam);
+        Label highScoreLabel = new Label("Highest Score: " + highScore, new Label.LabelStyle(highScoreFont, Color.WHITE));
+        scoreTable.add(highScoreLabel).padBottom(90f).row();
+
+
         // High score
         param.size = 100;
-        BitmapFont highScoreFont = gen.generateFont(param);
-        Label highScoreLabel = new Label("High Score: " + highScore, new Label.LabelStyle(highScoreFont, Color.WHITE));
         scoreTable.add(highScoreLabel).padBottom(90f).row();;
 
-        // Score actual
-        param.size = 90;
-        BitmapFont scoreFont = gen.generateFont(param);
+        // ===== SCORE ACTUAL =====
+        FreeTypeFontGenerator.FreeTypeFontParameter scoreParam = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        scoreParam.size = 90;
+        scoreParam.color = Color.WHITE;
+        scoreParam.borderWidth = 8f; // aún más fino si deseas
+        scoreParam.borderColor = Color.BLACK;
+        BitmapFont scoreFont = gen.generateFont(scoreParam);
         Label scoreLabel = new Label("Your Score: " + finalScore, new Label.LabelStyle(scoreFont, Color.WHITE));
         scoreTable.add(scoreLabel).padBottom(90f);
 

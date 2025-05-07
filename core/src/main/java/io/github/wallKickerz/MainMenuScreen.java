@@ -60,22 +60,29 @@ public class MainMenuScreen implements Screen {
 
         // Fuente para el título
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("font/Schoolbell-Regular.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        param.size = 160;
-        param.color = Color.WHITE;
-        param.borderWidth = 12;
-        param.borderColor = Color.BLACK;
-        BitmapFont titleFont = gen.generateFont(param);
+        FreeTypeFontGenerator.FreeTypeFontParameter titleParam = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        titleParam.size = 160;
+        titleParam.color = Color.WHITE;
+        titleParam.borderWidth = 12;
+        titleParam.borderColor = Color.BLACK;
+        BitmapFont titleFont = gen.generateFont(titleParam);
 
         // Título del juego
         Label titleLabel = new Label("WALL KICKERZ", new Label.LabelStyle(titleFont, Color.WHITE));
         headerTable.add(titleLabel).padBottom(90f).row();
 
+
+        // Fuente para el High Score (con borde más delgado)
+        FreeTypeFontGenerator.FreeTypeFontParameter scoreParam = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        scoreParam.size = 100;
+        scoreParam.color = Color.WHITE;
+        scoreParam.borderWidth = 9; // Puedes ajustar este valor según lo que se vea mejor
+        scoreParam.borderColor = Color.BLACK;
+        BitmapFont highScoreFont = gen.generateFont(scoreParam);
+
         // High Score
-        param.size = 100;
-        BitmapFont highScoreFont = gen.generateFont(param);
         int highScore = PreferencesManager.getHighScore();
-        Label highScoreLabel = new Label("High Score: " + highScore, new Label.LabelStyle(highScoreFont, Color.WHITE));
+        Label highScoreLabel = new Label("Highest Score: " + highScore, new Label.LabelStyle(highScoreFont, Color.WHITE));
         headerTable.add(highScoreLabel).padBottom(600f);
 
         // Añadir header a la tabla principal

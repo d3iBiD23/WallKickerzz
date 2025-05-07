@@ -15,6 +15,7 @@ public class Score {
     private float highestY;
     private int highScore;
     private GlyphLayout smallLayout;
+    private static final float HIGH_SCORE_PADDING = 120f;
 
     public Score() {
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(
@@ -23,15 +24,16 @@ public class Score {
         FreeTypeFontGenerator.FreeTypeFontParameter param =
             new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-        // Fuente grande para el score actual
-        param.size = 120;
+        // Fuente grande para el high score
+        param.size = 100;
         param.color = Color.WHITE;
-        param.borderWidth = 8;
+        param.borderWidth = 8; // Borde grande para el high score
         param.borderColor = Color.BLACK;
         font = gen.generateFont(param);
 
-        // Fuente más pequeña para el high score
-        param.size = 60;
+        // Fuente más pequeña para el score (borde más pequeño)
+        param.size = 90;
+        param.borderWidth = 8; // Borde más pequeño para el high score
         smallFont = gen.generateFont(param);
 
         gen.dispose();
@@ -57,19 +59,19 @@ public class Score {
     }
 
     public void render(SpriteBatch batch, float viewportWidth, float viewportHeight) {
-        // Renderizar score actual
-        String scoreText = "Score: " + score;
-        layout.setText(font, scoreText);
-        float scoreX = (viewportWidth - layout.width) / 2f;
-        float scoreY = viewportHeight - layout.height - 150f;
-        font.draw(batch, layout, scoreX, scoreY);
+        // 1. Renderizar el high score arriba, con fuente grande
+        String highScoreText = "Highest Score : " + highScore;
+        layout.setText(font, highScoreText);
+        float highScoreX = (viewportWidth - layout.width) / 2f;
+        float highScoreY = viewportHeight - layout.height - 270f; // margen desde arriba
+        font.draw(batch, layout, highScoreX, highScoreY);
 
-        // Renderizar high score debajo
-        String highScoreText = "High Score: " + highScore;
-        smallLayout.setText(smallFont, highScoreText);
-        float highScoreX = (viewportWidth - smallLayout.width) / 2f;
-        float highScoreY = scoreY - smallLayout.height - 30f;
-        smallFont.draw(batch, smallLayout, highScoreX, highScoreY);
+        // 2. Renderizar el score actual más abajo, con fuente más pequeña
+        String scoreText = "Score: " + score;
+        smallLayout.setText(smallFont, scoreText);
+        float scoreX = (viewportWidth - smallLayout.width) / 2f;
+        float scoreY = highScoreY - smallLayout.height - HIGH_SCORE_PADDING;
+        smallFont.draw(batch, smallLayout, scoreX, scoreY);
     }
 
     public int getCurrentScore() {
