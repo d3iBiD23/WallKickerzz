@@ -2,11 +2,15 @@ package io.github.wallKickerz;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -68,6 +72,37 @@ public class GameOverScreen implements Screen {
         stage.addActor(table);
 
         Gdx.input.setInputProcessor(stage);
+
+        Table scoreTable = new Table();
+        scoreTable.center();
+
+        // Obtener los scores del juego
+        int finalScore = game.getCurrentScore();
+        int highScore = game.getHighScore();
+
+        // Crear fuentes para mostrar los scores
+        FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("font/Schoolbell-Regular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        // Fuente para el score final
+        param.size = 80;
+        param.color = Color.WHITE;
+        param.borderWidth = 5;
+        param.borderColor = Color.BLACK;
+        BitmapFont scoreFont = gen.generateFont(param);
+
+        // Fuente para el high score
+        param.size = 60;
+        BitmapFont highScoreFont = gen.generateFont(param);
+
+        // Mostrar scores
+        scoreTable.add(new Label("Your Score: " + finalScore, new Label.LabelStyle(scoreFont, Color.WHITE))).row();
+        scoreTable.add(new Label("High Score: " + highScore, new Label.LabelStyle(highScoreFont, Color.WHITE))).padTop(30f);
+
+        // Añadir la tabla de scores a la tabla principal
+        table.add(scoreTable).colspan(2).padBottom(100f).row();
+
+        gen.dispose();
     }
 
     private Stack createLetterButton(String text, float width, float height) {

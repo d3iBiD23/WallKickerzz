@@ -2,11 +2,15 @@ package io.github.wallKickerz;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -24,8 +28,8 @@ public class MainMenuScreen implements Screen {
     private Texture backgroundTexture;
     private Texture buttonWideBg;
     private static final float PLAY_BUTTON_SCALE = 4.5f; // Escala para botones
-    private static final float LETTER_SCALE = 2f;       // Escala para letras
-    private static final float LETTER_PAD = 15f;        // Padding entre letras
+    private static final float LETTER_SCALE = 2f; // Escala para letras
+    private static final float LETTER_PAD = 15f; // Padding entre letras
 
     public MainMenuScreen(final Main game) {
         this.game = game;
@@ -73,6 +77,30 @@ public class MainMenuScreen implements Screen {
         root.add(playStack).size(btnWidth, btnHeight).pad(200).row();
         root.add(exitStack).size(btnWidth, btnHeight).pad(20);
         stage.addActor(root);
+
+        // Crear tabla para el high score
+        Table highScoreTable = new Table();
+        highScoreTable.center();
+
+        // Obtener el high score
+        int highScore = PreferencesManager.getHighScore();
+
+        // Crear fuente para el high score
+        FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("font/Schoolbell-Regular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        param.size = 60;
+        param.color = Color.WHITE;
+        param.borderWidth = 5;
+        param.borderColor = Color.BLACK;
+        BitmapFont highScoreFont = gen.generateFont(param);
+
+        // Mostrar high score
+        highScoreTable.add(new Label("High Score: " + highScore, new Label.LabelStyle(highScoreFont, Color.WHITE)));
+
+        // Añadir la tabla de high score a la tabla principal
+        root.add(highScoreTable).colspan(2).padBottom(50f).row();
+
+        gen.dispose();
     }
 
     /**
@@ -112,10 +140,21 @@ public class MainMenuScreen implements Screen {
         stage.getViewport().update(width, height, true);
     }
 
-    @Override public void show() {}
-    @Override public void pause() {}
-    @Override public void resume() {}
-    @Override public void hide() {}
+    @Override
+    public void show() {
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+    }
 
     @Override
     public void dispose() {
