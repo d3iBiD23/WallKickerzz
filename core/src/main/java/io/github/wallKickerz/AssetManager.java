@@ -31,6 +31,10 @@ public class AssetManager {
         return springTexture;
     }
 
+    public TextureRegion getSpringRegion() {
+        return new TextureRegion(springTexture);
+    }
+
     public void drawBackground(SpriteBatch batch, float bottomY) {
         batch.draw(backgroundTexture, 0, bottomY, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }

@@ -291,7 +291,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         assetManager.dispose();
-        springTexture.dispose();
         for (Spring spring : springs) {
             spring.dispose();
         }
