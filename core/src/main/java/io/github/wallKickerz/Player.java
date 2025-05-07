@@ -43,7 +43,7 @@ public class Player {
     }
 
     public void jumpHigher() {
-        this.velocityY = 800f; // o cualquier valor más alto que tu salto normal
+        this.velocityY = 5000f; // o cualquier valor más alto que tu salto normal
     }
 
     public void update(float delta, Array<Platform> platforms) {
