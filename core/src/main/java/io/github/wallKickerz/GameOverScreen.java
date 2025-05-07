@@ -73,6 +73,9 @@ public class GameOverScreen implements Screen {
 
         Gdx.input.setInputProcessor(stage);
 
+
+        // SCORES
+
         Table scoreTable = new Table();
         scoreTable.center();
 

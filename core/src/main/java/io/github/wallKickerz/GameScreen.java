@@ -156,6 +156,7 @@ public class GameScreen implements Screen {
         // Game Over
         float bottomEdge = worldCamera.position.y - worldCamera.viewportHeight / 2f;
         if (player.getHitbox().y < bottomEdge) {
+            game.setCurrentScore(score.getCurrentScore());
             game.setScreen(new GameOverScreen(game));
             return;
         }
