@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.Iterator;
+import java.util.Random;
 
 public class GameScreen implements Screen {
     private final Main game;
@@ -36,6 +37,10 @@ public class GameScreen implements Screen {
     private Score score;
     private Texture springTexture;
     private Array<Spring> springs;
+    private Random random;
+
+    // Constantes para la generación de muelles
+    private static final float SPRING_PROBABILITY = 0.1f; // 10% de probabilidad de generar un muelle en una plataforma
 
 
     public GameScreen(Main game) {
@@ -43,6 +48,9 @@ public class GameScreen implements Screen {
         this.assetManager = new AssetManager();
         this.player = new Player(assetManager);
         this.score = new Score();
+
+        // Inicializar random primero
+        this.random = new Random();
 
         // Carga de texturas HUD
         buttonBg = new Texture(Gdx.files.internal("PNG/Buttens and Headers/ButtonSquare_Beighe.png"));
@@ -64,19 +72,16 @@ public class GameScreen implements Screen {
         float y = hudCamera.viewportHeight - bgH - PADDING;
         buttonBounds = new Rectangle(x, y, bgW, bgH);
 
+        // SPRINGS texture
+        springTexture = new Texture(Gdx.files.internal("PNG/Spring.png"));
+        springs = new Array<>();
+
         // Plataformas iniciales
         this.platforms = createInitialPlatforms(assetManager);
         highestPlatformY = 0;
         for (Platform p : platforms) {
             highestPlatformY = Math.max(highestPlatformY, p.getY());
         }
-
-        springTexture = new Texture(Gdx.files.internal("PNG/Spring.png"));
-        springs = new Array<>();
-
-        // Ejemplo: añadir un muelle sobre cierta plataforma
-        springs.add(new Spring(springTexture, 300, 250));  // posición ejemplo
-        springs.add(new Spring(springTexture, 500, 450));
     }
 
     private Array<Platform> createInitialPlatforms(AssetManager assetManager) {
@@ -87,7 +92,28 @@ public class GameScreen implements Screen {
         list.add(new Platform(100, 400, 150, 0, assetManager, false));
         list.add(new Platform(250, 800, 150, 0, assetManager, false));
         list.add(new Platform(150, 1200, 150, 0, assetManager, false));
+
+        // Generar muelles iniciales en plataformas aleatorias
+        for (int i = 1; i < list.size; i++) { // Empezamos desde 1 para no poner en el suelo
+            if (random.nextFloat() < SPRING_PROBABILITY) {
+                Platform platform = list.get(i);
+                createSpringOnPlatform(platform);
+            }
+        }
+
         return list;
+    }
+
+    /**
+     * Crea un muelle encima de una plataforma
+     */
+    private void createSpringOnPlatform(Platform platform) {
+        // Calcular la posición x centrada en la plataforma
+        float springX = platform.getX() + (platform.getWidth() / 2f) - (springTexture.getWidth() / 2f);
+        // Colocar el muelle justo encima de la plataforma
+        float springY = platform.getY() + platform.getHeight();
+
+        springs.add(new Spring(springTexture, springX, springY));
     }
 
     @Override
@@ -107,6 +133,8 @@ public class GameScreen implements Screen {
         player.handleInput();
         player.update(delta, platforms);
         updatePlatforms();
+        updateSprings(delta);
+        checkSpringCollisions();
 
         // Mover cámara de mundo
         float camX = Gdx.graphics.getWidth() / 2f;
@@ -134,6 +162,7 @@ public class GameScreen implements Screen {
         batch.begin();
         assetManager.drawBackground(batch, worldCamera.position.y - worldCamera.viewportHeight / 2f);
         for (Platform platform : platforms) platform.render(batch);
+        for (Spring spring : springs) spring.render(batch);
         player.render(batch);
         batch.end();
 
@@ -152,11 +181,44 @@ public class GameScreen implements Screen {
             hudCamera.viewportWidth,
             hudCamera.viewportHeight
         );
-
-        for (Spring spring : springs) {
-            spring.render(batch);
-        }
         batch.end();
+    }
+
+    /**
+     * Comprueba colisiones con muelles
+     */
+    private void checkSpringCollisions() {
+        for (Spring spring : springs) {
+            if (player.getHitbox().overlaps(spring.getBounds())) {
+                // Reposicionar el jugador por encima del muelle (opcional)
+                player.setY(spring.getY() + spring.getBounds().height);
+
+                // Aplicar salto potenciado
+                player.jumpHigher();
+                break;  // sólo un muelle por frame
+            }
+        }
+    }
+
+    /**
+     * Actualiza los muelles y elimina los que están fuera de la pantalla
+     */
+    private void updateSprings(float delta) {
+        // Actualizar los muelles
+        for (Spring spring : springs) {
+            spring.update(delta);
+        }
+
+        // Eliminar muelles que estén fuera de la pantalla
+        float bottomEdge = worldCamera.position.y - worldCamera.viewportHeight / 2f;
+        Iterator<Spring> it = springs.iterator();
+        while (it.hasNext()) {
+            Spring spring = it.next();
+            if (spring.getY() + springTexture.getHeight() < bottomEdge) {
+                spring.dispose();
+                it.remove();
+            }
+        }
     }
 
     /**
@@ -172,9 +234,16 @@ public class GameScreen implements Screen {
                 0f,
                 Gdx.graphics.getWidth() - Platform.DEFAULT_WIDTH  // asume un ancho fijo o variable
             );
-            platforms.add(new Platform(nextX, nextY, 150, 0, assetManager, false));
+            Platform newPlatform = new Platform(nextX, nextY, 150, 0, assetManager, false);
+            platforms.add(newPlatform);
             highestPlatformY = nextY;
+
+            // Posibilidad de crear un muelle en la plataforma
+            if (random.nextFloat() < SPRING_PROBABILITY) {
+                createSpringOnPlatform(newPlatform);
+            }
         }
+
         // B) Elimina las plataformas que queden fuera de la parte inferior
         float bottomEdge = worldCamera.position.y - worldCamera.viewportHeight / 2f;
         Iterator<Platform> it = platforms.iterator();
@@ -184,18 +253,6 @@ public class GameScreen implements Screen {
                 it.remove();
             }
         }
-        for (Spring spring : springs) {
-            if (player.getHitbox().overlaps(spring.getBounds())) {
-                // Reposicionar el jugador por encima del muelle (opcional)
-                player.setY(spring.getY() + spring.getBounds().height);
-
-                // Aplicar salto potenciado
-                player.jumpHigher();
-
-                break;  // sólo un muelle por frame
-            }
-        }
-
     }
 
     @Override
@@ -221,6 +278,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         assetManager.dispose();
+        springTexture.dispose();
         for (Spring spring : springs) {
             spring.dispose();
         }

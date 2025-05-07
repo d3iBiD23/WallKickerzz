@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Spring {
+public class Spring extends Rectangle{
     private Texture texture;
     private Rectangle bounds;
     private float x, y;
@@ -13,7 +13,7 @@ public class Spring {
         this.texture = texture;
         this.x = x;
         this.y = y;
-        this.bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
+        bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
     }
 
     public void render(SpriteBatch batch) {
@@ -26,6 +26,10 @@ public class Spring {
 
     public float getY() {
         return y;
+    }
+
+    public void update(float delta) {
+        bounds.setPosition(x, y); // por si se mueve
     }
 
     public void dispose() {
