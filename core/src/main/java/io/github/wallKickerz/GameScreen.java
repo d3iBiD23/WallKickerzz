@@ -73,7 +73,6 @@ public class GameScreen implements Screen {
         buttonBounds = new Rectangle(x, y, bgW, bgH);
 
         // SPRINGS texture
-        springTexture = new Texture(Gdx.files.internal("PNG/Spring.png"));
         springs = new Array<>();
 
         // Plataformas iniciales
@@ -108,11 +107,11 @@ public class GameScreen implements Screen {
      * Crea un muelle encima de una plataforma
      */
     private void createSpringOnPlatform(Platform platform) {
+        Texture springTexture = assetManager.getSpringTexture();
         // Calcular la posición x centrada en la plataforma
         float springX = platform.getX() + (platform.getWidth() / 2f) - (springTexture.getWidth() / 2f);
         // Colocar el muelle justo encima de la plataforma
         float springY = platform.getY() + platform.getHeight();
-
         springs.add(new Spring(springTexture, springX, springY));
     }
 

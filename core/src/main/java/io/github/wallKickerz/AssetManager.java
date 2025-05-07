@@ -12,6 +12,7 @@ public class AssetManager {
 
     private Texture groundPlatformTexture; // Textura para el suelo
     private Texture floatingPlatformTexture; // Textura para plataformas flotantes
+    private Texture springTexture;
 
     public AssetManager() {
         loadAssets();
@@ -22,6 +23,12 @@ public class AssetManager {
         groundPlatformTexture = new Texture(Gdx.files.internal("PNG/LandPiece_DarkGreen.png"));
         floatingPlatformTexture = new Texture(Gdx.files.internal("PNG/LandPiece_DarkGray.png"));
         playerTexture = new Texture(Gdx.files.internal("PNG/CharacterLeft_Jump.png"));
+        springTexture = new Texture(Gdx.files.internal("PNG/Spring.png"));
+
+    }
+
+    public Texture getSpringTexture() {
+        return springTexture;
     }
 
     public void drawBackground(SpriteBatch batch, float bottomY) {
@@ -46,5 +53,6 @@ public class AssetManager {
         groundPlatformTexture.dispose();
         floatingPlatformTexture.dispose();
         playerTexture.dispose();
+        springTexture.dispose();
     }
 }
