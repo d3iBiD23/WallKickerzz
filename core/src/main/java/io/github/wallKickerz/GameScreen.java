@@ -77,33 +77,37 @@ public class GameScreen implements Screen {
         springs = new Array<>();
 
         // Plataformas iniciales
-        this.platforms = createInitialPlatforms(assetManager);
+        this.platforms = new Array<>();
         highestPlatformY = 0;
-        for (Platform p : platforms) {
-            highestPlatformY = Math.max(highestPlatformY, p.getY());
-        }
+
+        // Crear suelo
+        platforms.add(new Platform(0, 0, Gdx.graphics.getWidth(), 100, assetManager, true));
+
+        // Generar plataformas iniciales aleatorias
+        generateInitialPlatforms(5); // Genera 5 plataformas iniciales además del suelo
     }
 
-    private Array<Platform> createInitialPlatforms(AssetManager assetManager) {
-        Array<Platform> list = new Array<>();
-        // Suelo
-        list.add(new Platform(0, 0, Gdx.graphics.getWidth(), 100, assetManager, true));
-        // Algunas plataformas flotantes iniciales
-        list.add(new Platform(100, 400, 150, 0, assetManager, false));
-        list.add(new Platform(250, 800, 150, 0, assetManager, false));
-        list.add(new Platform(150, 1200, 150, 0, assetManager, false));
+    private void generateInitialPlatforms(int count) {
+        float currentY = 100; // Comenzar justo encima del suelo
 
-        // Generar muelles iniciales en plataformas aleatorias
-        for (int i = 1; i < list.size; i++) { // Empezamos desde 1 para no poner en el suelo
+        for (int i = 0; i < count; i++) {
+            float nextY = currentY + MathUtils.random(SPAWN_GAP_MIN, SPAWN_GAP_MAX);
+            float nextX = MathUtils.random(
+                0f,
+                Gdx.graphics.getWidth() - Platform.DEFAULT_WIDTH
+            );
+
+            Platform newPlatform = new Platform(nextX, nextY, 150, 0, assetManager, false);
+            platforms.add(newPlatform);
+            currentY = nextY;
+            highestPlatformY = Math.max(highestPlatformY, currentY);
+
+            // Posibilidad de crear un muelle en la plataforma
             if (random.nextFloat() < SPRING_PROBABILITY) {
-                Platform platform = list.get(i);
-                createSpringOnPlatform(platform);
+                createSpringOnPlatform(newPlatform);
             }
         }
-
-        return list;
     }
-
     /**
      * Crea un muelle encima de una plataforma
      */
@@ -241,14 +245,15 @@ public class GameScreen implements Screen {
      */
     private void updatePlatforms() {
         float topEdge = worldCamera.position.y + worldCamera.viewportHeight / 2f;
+
         // A) Genera mientras la Y más alta esté por debajo del topEdge
         while (highestPlatformY < topEdge) {
-            float nextY = highestPlatformY
-                + MathUtils.random(SPAWN_GAP_MIN, SPAWN_GAP_MAX);
+            float nextY = highestPlatformY + MathUtils.random(SPAWN_GAP_MIN, SPAWN_GAP_MAX);
             float nextX = MathUtils.random(
                 0f,
-                Gdx.graphics.getWidth() - Platform.DEFAULT_WIDTH  // asume un ancho fijo o variable
+                Gdx.graphics.getWidth() - Platform.DEFAULT_WIDTH
             );
+
             Platform newPlatform = new Platform(nextX, nextY, 150, 0, assetManager, false);
             platforms.add(newPlatform);
             highestPlatformY = nextY;
