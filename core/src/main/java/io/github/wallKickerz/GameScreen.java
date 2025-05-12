@@ -46,7 +46,7 @@ public class GameScreen implements Screen {
     public GameScreen(Main game) {
         this.game = game;
         this.assetManager = new AssetManager();
-        this.player = new Player(assetManager);
+        this.player = new Player();
         this.score = new Score();
 
         // Inicializar random primero

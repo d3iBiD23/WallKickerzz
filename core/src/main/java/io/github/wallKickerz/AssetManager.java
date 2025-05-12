@@ -16,6 +16,11 @@ public class AssetManager {
     private Texture brokenFloatingPlatformTexture;
     private Texture fragilePlatformTexture;
 
+    private Texture playerLeftStandingTexture;
+    private Texture playerLeftJumpTexture;
+    private Texture playerRightStandingTexture;
+    private Texture playerRightJumpTexture;
+
     public AssetManager() {
         loadAssets();
     }
@@ -28,6 +33,10 @@ public class AssetManager {
         springTexture = new Texture(Gdx.files.internal("PNG/Spring.png"));
         fragilePlatformTexture = new Texture(Gdx.files.internal("PNG/LandPiece_DarkMulticolored.png"));
         brokenFloatingPlatformTexture = new Texture(Gdx.files.internal("PNG/BrokenLandPiece_Multicolored.png"));
+        playerLeftStandingTexture = new Texture(Gdx.files.internal("PNG/CharacterLeft_Standing.png"));
+        playerLeftJumpTexture = new Texture(Gdx.files.internal("PNG/CharacterLeft_Jump.png"));
+        playerRightStandingTexture = new Texture(Gdx.files.internal("PNG/CharacterRight_Standing.png"));
+        playerRightJumpTexture = new Texture(Gdx.files.internal("PNG/CharacterRight_Jump.png"));
     }
 
     public Texture getSpringTexture() {
@@ -36,6 +45,22 @@ public class AssetManager {
 
     public TextureRegion getSpringRegion() {
         return new TextureRegion(springTexture);
+    }
+
+    public TextureRegion getPlayerLeftStandingRegion() {
+        return new TextureRegion(playerLeftStandingTexture);
+    }
+
+    public TextureRegion getPlayerLeftJumpRegion() {
+        return new TextureRegion(playerLeftJumpTexture);
+    }
+
+    public TextureRegion getPlayerRightStandingRegion() {
+        return new TextureRegion(playerRightStandingTexture);
+    }
+
+    public TextureRegion getPlayerRightJumpRegion() {
+        return new TextureRegion(playerRightJumpTexture);
     }
 
     public void drawBackground(SpriteBatch batch, float bottomY) {
@@ -71,5 +96,9 @@ public class AssetManager {
         springTexture.dispose();
         brokenFloatingPlatformTexture.dispose();
         fragilePlatformTexture.dispose();
+        playerLeftStandingTexture.dispose();
+        playerLeftJumpTexture.dispose();
+        playerRightStandingTexture.dispose();
+        playerRightJumpTexture.dispose();
     }
 }

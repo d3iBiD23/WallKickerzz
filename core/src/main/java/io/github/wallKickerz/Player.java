@@ -12,20 +12,30 @@ public class Player {
     private static final float JUMP_VELOCITY = 1800f;
     private static final float MOVE_SPEED = 600f;
 
-    private final TextureRegion texture;
     private final Rectangle hitbox;
     private float x, y;
     private float velocityY = 0;
     private float velocityX = 0;
+    private enum State {
+        JUMPING, STANDING
+    }
+
+    private State currentState;
+    private boolean facingRight;
+
+    private TextureRegion currentTexture;
+    private final AssetManager assetManager;
 
     public float getVelocityY() {
         return velocityY;
     }
 
-    public Player(AssetManager assetManager) {
-        this.texture = assetManager.getPlayerTexture();
-        float width = texture.getRegionWidth() * SCALE;
-        float height = texture.getRegionHeight() * SCALE;
+    public Player() {
+        this.assetManager = new AssetManager();
+        this.currentState = State.STANDING;
+        this.currentTexture = assetManager.getPlayerLeftStandingRegion();
+        float width = currentTexture.getRegionWidth() * SCALE;
+        float height = currentTexture.getRegionHeight() * SCALE;
         this.x = (Gdx.graphics.getWidth() - width) / 2f;
         this.y = 100; // Posición inicial encima del suelo
 
@@ -41,6 +51,7 @@ public class Player {
         if (Gdx.input.isTouched()) {
             float touchX = Gdx.input.getX();
             velocityX = touchX < Gdx.graphics.getWidth() / 2f ? -MOVE_SPEED : MOVE_SPEED;
+            facingRight = velocityX > 0;
         } else {
             velocityX = 0;
         }
@@ -57,12 +68,19 @@ public class Player {
         x += velocityX * delta;
 
         // Limitar movimiento horizontal
-        float width = texture.getRegionWidth() * SCALE;
+        float width = currentTexture.getRegionWidth() * SCALE;
         if (x < 0) x = 0;
         if (x + width > Gdx.graphics.getWidth()) x = Gdx.graphics.getWidth() - width;
 
+        // Actualiza la textura dependiendo de la dirección y estado
+        if (currentState == State.STANDING) {
+            currentTexture = facingRight ? assetManager.getPlayerRightStandingRegion() : assetManager.getPlayerLeftStandingRegion();
+        } else if (currentState == State.JUMPING) {
+            currentTexture = facingRight ? assetManager.getPlayerRightJumpRegion() : assetManager.getPlayerLeftJumpRegion();
+        }
         // Actualizar hitbox
         hitbox.setPosition(x + 10f, y + 5f);
+
 
         // Verificar colisiones con plataformas
         for (Platform platform : platforms) {
@@ -76,6 +94,13 @@ public class Player {
                 }
                 break;
             }
+        }
+    }
+
+    public void jump() {
+        if (currentState == State.STANDING) {
+            velocityY = JUMP_VELOCITY;
+            currentState = State.JUMPING;
         }
     }
 
@@ -94,7 +119,7 @@ public class Player {
     }
 
     public void render(SpriteBatch batch) {
-        batch.draw(texture, x, y, texture.getRegionWidth() * SCALE, texture.getRegionHeight() * SCALE);
+        batch.draw(currentTexture, x, y, currentTexture.getRegionWidth() * SCALE, currentTexture.getRegionHeight() * SCALE);
     }
 
     public Rectangle getHitbox() {
