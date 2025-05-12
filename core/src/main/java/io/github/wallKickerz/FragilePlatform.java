@@ -9,7 +9,7 @@ public class FragilePlatform extends Platform {
     private final TextureRegion intactRegion;
     private final TextureRegion brokenRegion;
     private float breakTimer = 0f;
-    private static final float TIME_TO_DISAPPEAR = 0.5f; // segs tras romperse
+    private static final float TIME_TO_DISAPPEAR = 0.3f; // segs tras romperse
 
     public FragilePlatform(float x, float y, float width, AssetManager assets) {
         super(x, y, width, 0, assets, false);
