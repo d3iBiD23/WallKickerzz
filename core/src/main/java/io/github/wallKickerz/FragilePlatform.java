@@ -6,13 +6,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class FragilePlatform extends Platform {
     private enum State { INTACT, BROKEN }
     private State state = State.INTACT;
+    private final TextureRegion intactRegion;
     private final TextureRegion brokenRegion;
     private float breakTimer = 0f;
     private static final float TIME_TO_DISAPPEAR = 0.5f; // segs tras romperse
 
     public FragilePlatform(float x, float y, float width, AssetManager assets) {
         super(x, y, width, 0, assets, false);
-        this.brokenRegion = assets.getBrokenFloatingPlatformTexture();
+        this.intactRegion = assets.getFragilePlatformTexture();  // Textura intacta
+        this.brokenRegion = assets.getBrokenFloatingPlatformTexture();  // Textura rota
     }
 
     /** Llamar cuando el jugador aterrice en esta plataforma */
@@ -26,11 +28,9 @@ public class FragilePlatform extends Platform {
     @Override
     public void render(SpriteBatch batch) {
         if (state == State.INTACT) {
-            super.render(batch); // dibuja la textura normal :contentReference[oaicite:2]{index=2}:contentReference[oaicite:3]{index=3}
+            batch.draw(intactRegion, getX(), getY(), getWidth(), getHeight()); // Dibuja la plataforma intacta
         } else {
-            // dibuja la textura rota (sin escalar, asumiendo mismo tamaño que la original)
-            float x = getX(), y = getY(), w = getWidth(), h = getHeight();
-            batch.draw(brokenRegion, x, y, w, h);
+            batch.draw(brokenRegion, getX(), getY(), getWidth(), getHeight()); // Dibuja la plataforma rota
         }
     }
 
