@@ -13,6 +13,7 @@ public class AssetManager {
     private Texture groundPlatformTexture; // Textura para el suelo
     private Texture floatingPlatformTexture; // Textura para plataformas flotantes
     private Texture springTexture;
+    private Texture brokenFloatingPlatformTexture;
 
     public AssetManager() {
         loadAssets();
@@ -24,7 +25,7 @@ public class AssetManager {
         floatingPlatformTexture = new Texture(Gdx.files.internal("PNG/LandPiece_DarkGray.png"));
         playerTexture = new Texture(Gdx.files.internal("PNG/CharacterLeft_Jump.png"));
         springTexture = new Texture(Gdx.files.internal("PNG/Spring.png"));
-
+        brokenFloatingPlatformTexture = new Texture(Gdx.files.internal("PNG/BrokenLandPiece_Multicolored.png"));
     }
 
     public Texture getSpringTexture() {
@@ -41,6 +42,10 @@ public class AssetManager {
 
     public TextureRegion getGroundPlatformTexture() {
         return new TextureRegion(groundPlatformTexture, 13, 0, 35, 50);
+    }
+
+    public TextureRegion getBrokenFloatingPlatformTexture() {
+        return new TextureRegion(brokenFloatingPlatformTexture);
     }
 
     public TextureRegion getFloatingPlatformTexture() {

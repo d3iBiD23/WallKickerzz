@@ -108,6 +108,7 @@ public class GameScreen implements Screen {
             }
         }
     }
+
     /**
      * Crea un muelle encima de una plataforma
      */
@@ -138,6 +139,7 @@ public class GameScreen implements Screen {
         // Lógica juego
         player.handleInput();
         player.update(delta, platforms);
+        updateFragilePlatforms(delta);
         updatePlatforms();
         updateSprings(delta);
         checkSpringCollisions(delta);
@@ -208,8 +210,8 @@ public class GameScreen implements Screen {
                 && prevFeetY >= s.y + s.height;
 
             // 3) Comprobación en X
-            boolean overlapsX = hitbox.x + hitbox.width  > s.x
-                && hitbox.x                 < s.x + s.width;
+            boolean overlapsX = hitbox.x + hitbox.width > s.x
+                && hitbox.x < s.x + s.width;
 
             if (hitsFromAbove && overlapsX) {
                 // Reposiciona justo encima
@@ -255,13 +257,17 @@ public class GameScreen implements Screen {
                 Gdx.graphics.getWidth() - Platform.DEFAULT_WIDTH
             );
 
-            Platform newPlatform = new Platform(nextX, nextY, 150, 0, assetManager, false);
-            platforms.add(newPlatform);
-            highestPlatformY = nextY;
-
-            // Posibilidad de crear un muelle en la plataforma
-            if (random.nextFloat() < SPRING_PROBABILITY) {
-                createSpringOnPlatform(newPlatform);
+            if (random.nextFloat() < 0.2f) {
+                FragilePlatform fp = new FragilePlatform(nextX, nextY, Platform.DEFAULT_WIDTH, assetManager);
+                platforms.add(fp);
+            } else {
+                Platform newPlatform = new Platform(nextX, nextY, 150, 0, assetManager, false);
+                platforms.add(newPlatform);
+                highestPlatformY = nextY;
+                // Posibilidad de crear un muelle en la plataforma
+                if (random.nextFloat() < SPRING_PROBABILITY) {
+                    createSpringOnPlatform(newPlatform);
+                }
             }
         }
 
@@ -272,6 +278,19 @@ public class GameScreen implements Screen {
             Platform p = it.next();
             if (p.getY() + p.getHeight() < bottomEdge) {
                 it.remove();
+            }
+        }
+    }
+
+    private void updateFragilePlatforms(float delta) {
+        Iterator<Platform> it = platforms.iterator();
+        while (it.hasNext()) {
+            Platform p = it.next();
+            if (p instanceof FragilePlatform) {
+                FragilePlatform fp = (FragilePlatform) p;
+                if (fp.updateAndCheckRemoval(delta)) {
+                    it.remove(); // desaparece tras la animación
+                }
             }
         }
     }

@@ -69,6 +69,11 @@ public class Player {
             if (isLandingOnPlatform(platform, delta)) {
                 y = platform.getY() + platform.getHeight();
                 velocityY = JUMP_VELOCITY;
+
+                // Si es plataforma frágil, la rompemos
+                if (platform instanceof FragilePlatform) {
+                    ((FragilePlatform) platform).breakPlatform();
+                }
                 break;
             }
         }
