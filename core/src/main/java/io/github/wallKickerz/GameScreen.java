@@ -25,7 +25,7 @@ public class GameScreen implements Screen {
 
     private float initialCameraY;
     private float highestPlatformY; // Guarda la Y más alta de las plataformas
-    private static final float SPAWN_GAP_MIN = 150f;  // mínimo espacio vertical entre plataformas
+    private static final float SPAWN_GAP_MIN = 250f;  // mínimo espacio vertical entre plataformas
     private static final float SPAWN_GAP_MAX = 300f;  // máximo espacio vertical
 
     private Texture buttonBg;
