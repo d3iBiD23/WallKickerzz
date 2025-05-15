@@ -45,6 +45,9 @@ public class GameScreen implements Screen {
     private Texture touchLeftTexture;
     private Texture touchRightTexture;
     private boolean showTouchInstructions = true;
+    private float touchScale = 4f; // Aumentamos el tamaño
+    private float touchYPosition = 750f; // Posición más arriba
+    private float touchAlpha = 0.8f; // Transparencia para que no distraigan mucho
     private float touchInstructionsTimer = 5f; // Mostrar durante 3 segundos
 
     public GameScreen(Main game) {
@@ -194,10 +197,6 @@ public class GameScreen implements Screen {
         float iconY = buttonBounds.y + (buttonBounds.height - iconH) / 2f;
         batch.draw(pauseIcon, iconX, iconY, iconW, iconH);
 
-        // Ocultar instrucciones después de unos segundos o al tocar
-        if (showTouchInstructions) {
-            touchInstructionsTimer -= delta;
-        }
 
         // score
         score.render(batch,
@@ -205,23 +204,36 @@ public class GameScreen implements Screen {
             hudCamera.viewportHeight
         );
 
+        // Ocultar instrucciones después de unos segundos o al tocar
         if (showTouchInstructions) {
-            float alpha = Math.min(1f, touchInstructionsTimer); // efecto de aparición/desaparición opcional
+            touchInstructionsTimer -= delta;
+            if (touchInstructionsTimer <= 0) {
+                showTouchInstructions = false;
+            }
+        }
 
-            // Tamaño y posición de las imágenes
-            float scale = 2f;
-            float textureWidth = touchLeftTexture.getWidth() * scale;
-            float textureHeight = touchLeftTexture.getHeight() * scale;
+        if (showTouchInstructions) {
+            // Tamaño de las imágenes
+            float textureWidth = touchLeftTexture.getWidth() * touchScale;
+            float textureHeight = touchLeftTexture.getHeight() * touchScale;
 
+            // Posiciones (centradas horizontalmente)
             float leftX = hudCamera.viewportWidth * 0.25f - textureWidth / 2f;
             float rightX = hudCamera.viewportWidth * 0.75f - textureWidth / 2f;
-            float y = 50f; // desde abajo
 
-            // Dibujar con alpha si deseas efecto fade (requiere activar blending)
-            batch.setColor(1, 1, 1, alpha);
-            batch.draw(touchLeftTexture, leftX, y, textureWidth, textureHeight);
-            batch.draw(touchRightTexture, rightX, y, textureWidth, textureHeight);
-            batch.setColor(1, 1, 1, 1); // Reset alpha
+            // Efecto de parpadeo suave
+            float pulse = (float) (0.7f + 0.3f * Math.sin(touchInstructionsTimer * 5f));
+
+            // color gris con pulsación suave
+            float grey = 0.5f;
+            batch.setColor(grey, grey, grey, touchAlpha * pulse);
+
+            // dibujar íconos ya tintados
+            batch.draw(touchLeftTexture, leftX, touchYPosition, textureWidth, textureHeight);
+            batch.draw(touchRightTexture, rightX, touchYPosition, textureWidth, textureHeight);
+
+            // restaurar color a blanco para el resto del HUD
+            batch.setColor(1f, 1f, 1f, 1f);
         }
 
         batch.end();
