@@ -45,7 +45,7 @@ public class GameScreen implements Screen {
     private Texture touchLeftTexture;
     private Texture touchRightTexture;
     private boolean showTouchInstructions = true;
-    private float touchInstructionsTimer = 3f; // Mostrar durante 3 segundos
+    private float touchInstructionsTimer = 5f; // Mostrar durante 3 segundos
 
     public GameScreen(Main game) {
         this.game = game;
@@ -197,9 +197,6 @@ public class GameScreen implements Screen {
         // Ocultar instrucciones después de unos segundos o al tocar
         if (showTouchInstructions) {
             touchInstructionsTimer -= delta;
-            if (touchInstructionsTimer <= 0 || Gdx.input.justTouched()) {
-                showTouchInstructions = false;
-            }
         }
 
         // score
