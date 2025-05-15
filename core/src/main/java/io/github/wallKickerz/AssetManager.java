@@ -1,6 +1,7 @@
 package io.github.wallKickerz;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -21,6 +22,8 @@ public class AssetManager {
     private Texture playerRightStandingTexture;
     private Texture playerRightJumpTexture;
 
+    private Sound jumpSound;
+
     public AssetManager() {
         loadAssets();
     }
@@ -37,10 +40,15 @@ public class AssetManager {
         playerLeftJumpTexture = new Texture(Gdx.files.internal("PNG/CharacterLeft_Jump.png"));
         playerRightStandingTexture = new Texture(Gdx.files.internal("PNG/CharacterRight_Standing.png"));
         playerRightJumpTexture = new Texture(Gdx.files.internal("PNG/CharacterRight_Jump.png"));
+        jumpSound = Gdx.audio.newSound(Gdx.files.internal("sfx/jump/jump_effect.mp3"));
     }
 
     public Texture getSpringTexture() {
         return springTexture;
+    }
+
+    public Sound getJumpSound() {
+        return jumpSound;
     }
 
     public TextureRegion getSpringRegion() {
@@ -100,5 +108,8 @@ public class AssetManager {
         playerLeftJumpTexture.dispose();
         playerRightStandingTexture.dispose();
         playerRightJumpTexture.dispose();
+        if (jumpSound != null) {
+            jumpSound.dispose();
+        }
     }
 }

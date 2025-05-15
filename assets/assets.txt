@@ -232,6 +232,7 @@ data/uiskin_data/tree-minus.png
 data/uiskin_data/tree-plus.png
 data/uiskin_data/white.png
 font/Schoolbell-Regular.ttf
+sfx/jump/jump_effect.mp3
 touch/touch_finger_one.png
 touch/touch_tap.png
 touch/touch_tap_double.png

@@ -1,6 +1,7 @@
 package io.github.wallKickerz;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -58,7 +59,10 @@ public class Player {
     }
 
     public void jumpHigher() {
-        this.velocityY = 5000f; // o cualquier valor más alto que tu salto normal
+        // Reproducir efecto de sonido
+        assetManager.getJumpSound().play(0.8f, 1.4f, 0f);
+
+        this.velocityY = 5000f; // salto mejorado (e.g. tras muelle)
     }
 
     public void update(float delta, Array<Platform> platforms) {
@@ -85,10 +89,13 @@ public class Player {
         // Verificar colisiones con plataformas
         for (Platform platform : platforms) {
             if (isLandingOnPlatform(platform, delta)) {
+                // Reproducir sonido de salto al rebotar en plataforma
+                assetManager.getJumpSound().play(0.8f, 1.4f, 0f);
+
                 y = platform.getY() + platform.getHeight();
                 velocityY = JUMP_VELOCITY;
 
-                // Si es plataforma frágil, la rompemos
+                // Manejar plataforma frágil
                 if (platform instanceof FragilePlatform) {
                     ((FragilePlatform) platform).breakPlatform();
                 }
@@ -99,6 +106,9 @@ public class Player {
 
     public void jump() {
         if (currentState == State.STANDING) {
+            // Reproducir efecto de sonido
+            assetManager.getJumpSound().play(0.8f, 1.4f, 0f);
+
             velocityY = JUMP_VELOCITY;
             currentState = State.JUMPING;
         }
