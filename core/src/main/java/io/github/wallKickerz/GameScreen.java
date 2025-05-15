@@ -95,7 +95,7 @@ public class GameScreen implements Screen {
         // Crear suelo
         platforms.add(new Platform(0, 0, Gdx.graphics.getWidth(), 100, assetManager, true));
 
-        // Generar plataformas iniciales aleatorias
+        // Genero plataformas iniciales aleatorias
         generateInitialPlatforms(5); // Genera 5 plataformas iniciales además del suelo
     }
 
