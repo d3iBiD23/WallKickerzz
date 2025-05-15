@@ -42,6 +42,10 @@ public class GameScreen implements Screen {
     // Constantes para la generación de muelles
     private static final float SPRING_PROBABILITY = 0.1f; // 10% de probabilidad de generar un muelle en una plataforma
 
+    private Texture touchLeftTexture;
+    private Texture touchRightTexture;
+    private boolean showTouchInstructions = true;
+    private float touchInstructionsTimer = 3f; // Mostrar durante 3 segundos
 
     public GameScreen(Main game) {
         this.game = game;
@@ -64,6 +68,11 @@ public class GameScreen implements Screen {
 
         hudCamera = new OrthographicCamera();
         hudCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+
+        touchLeftTexture = new Texture(Gdx.files.internal("touch/touch_tap.png"));
+        touchRightTexture = new Texture(Gdx.files.internal("touch/touch_tap.png"));
+
 
         // Calcula bounds del botón completo (fondo + icono)
         float bgW = buttonBg.getWidth() * BG_SCALE;
@@ -185,11 +194,39 @@ public class GameScreen implements Screen {
         float iconY = buttonBounds.y + (buttonBounds.height - iconH) / 2f;
         batch.draw(pauseIcon, iconX, iconY, iconW, iconH);
 
+        // Ocultar instrucciones después de unos segundos o al tocar
+        if (showTouchInstructions) {
+            touchInstructionsTimer -= delta;
+            if (touchInstructionsTimer <= 0 || Gdx.input.justTouched()) {
+                showTouchInstructions = false;
+            }
+        }
+
         // score
         score.render(batch,
             hudCamera.viewportWidth,
             hudCamera.viewportHeight
         );
+
+        if (showTouchInstructions) {
+            float alpha = Math.min(1f, touchInstructionsTimer); // efecto de aparición/desaparición opcional
+
+            // Tamaño y posición de las imágenes
+            float scale = 2f;
+            float textureWidth = touchLeftTexture.getWidth() * scale;
+            float textureHeight = touchLeftTexture.getHeight() * scale;
+
+            float leftX = hudCamera.viewportWidth * 0.25f - textureWidth / 2f;
+            float rightX = hudCamera.viewportWidth * 0.75f - textureWidth / 2f;
+            float y = 50f; // desde abajo
+
+            // Dibujar con alpha si deseas efecto fade (requiere activar blending)
+            batch.setColor(1, 1, 1, alpha);
+            batch.draw(touchLeftTexture, leftX, y, textureWidth, textureHeight);
+            batch.draw(touchRightTexture, rightX, y, textureWidth, textureHeight);
+            batch.setColor(1, 1, 1, 1); // Reset alpha
+        }
+
         batch.end();
     }
 
@@ -321,6 +358,8 @@ public class GameScreen implements Screen {
         for (Spring spring : springs) {
             spring.dispose();
         }
+        touchLeftTexture.dispose();
+        touchRightTexture.dispose();
         score.dispose();
     }
 }
